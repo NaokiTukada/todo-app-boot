@@ -1,5 +1,6 @@
 package com.example.todoapp.controller;
 
+import com.example.todoapp.domain.User;
 import com.example.todoapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,9 +40,7 @@ public class UserController {
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (userOptional.isPresent()) {
-            // ここでパスワードの照合とJWTの生成を行います（次のステップで実装）
-            // Spring Securityの AuthenticationManager を利用するのが一般的です
-            return ResponseEntity.ok(Map.of("token", "DUMMY_TOKEN")); // 仮のトークン
+            return ResponseEntity.ok(Map.of("token", "DUMMY_TOKEN")); 
         } else {
             return new ResponseEntity<>("メールアドレスまたはパスワードが間違っています。", HttpStatus.UNAUTHORIZED);
         }
