@@ -36,7 +36,9 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        String password = request.get("password");
+
+        //String password = request.get("password");
+
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (userOptional.isPresent()) {
