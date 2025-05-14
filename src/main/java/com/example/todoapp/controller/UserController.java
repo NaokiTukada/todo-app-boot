@@ -5,6 +5,7 @@ import com.example.todoapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Map<String, String> request) {
@@ -36,13 +39,17 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-
-        //String password = request.get("password");
-
+        String password = request.get("password");
         Optional<User> userOptional = userService.findUserByEmail(email);
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.ok(Map.of("token", "DUMMY_TOKEN")); 
+            User user = userOptional.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                
+                return ResponseEntity.ok(Map.of("token", "DUMMY_TOKEN")); 
+            } else {
+                return new ResponseEntity<>("メールアドレスまたはパスワードが間違っています。", HttpStatus.UNAUTHORIZED);
+            }
         } else {
             return new ResponseEntity<>("メールアドレスまたはパスワードが間違っています。", HttpStatus.UNAUTHORIZED);
         }
