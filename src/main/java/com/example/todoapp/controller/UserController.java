@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+//import org.springframework.security.core.Authentication;
 
 import java.util.Map;
 
@@ -42,7 +44,8 @@ public class UserController {
         String password = loginRequest.get("password");
 
         try {
-            Authentication authentication = authenticationManager.authenticate(
+            //Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
