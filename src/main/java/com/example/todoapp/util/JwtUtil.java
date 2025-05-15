@@ -1,5 +1,7 @@
 package com.example.todoapp.util;
 
+//認証後にユーザーを識別するための「鍵」（JWT）を発行したり、その鍵が正しいか確認したりする機能。
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

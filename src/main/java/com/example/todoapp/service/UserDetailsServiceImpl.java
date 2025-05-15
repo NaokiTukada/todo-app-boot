@@ -1,5 +1,7 @@
 package com.example.todoapp.service;
 
+//Spring Security がユーザー名（メールアドレス）を使って、認証に必要なユーザーの詳細情報をデータベースから取得する。
+
 import com.example.todoapp.domain.User;
 import com.example.todoapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

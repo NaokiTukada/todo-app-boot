@@ -1,5 +1,7 @@
 package com.example.todoapp.service;
 
+//ユーザー登録やログインといった、アプリケーションの主要な処理。
+
 import com.example.todoapp.domain.User;
 import com.example.todoapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

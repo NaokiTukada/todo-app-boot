@@ -1,5 +1,7 @@
 package com.example.todoapp.filter;
 
+//APIへのリクエストごとに、その「鍵」が入っているかチェックし、認証を通すか判断。
+
 import com.example.todoapp.service.UserDetailsServiceImpl;
 import com.example.todoapp.util.JwtUtil;
 import lombok.RequiredArgsConstructor;

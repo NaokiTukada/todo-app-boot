@@ -1,5 +1,7 @@
 package com.example.todoapp.domain;
 
+//「todoapp_db」データベースの「User」テーブルの構造。
+
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -16,7 +18,6 @@ public class User {
     @Column(length = 256, nullable = false, unique = true)
     private String email;
 
-    
     @Column(length = 256, nullable = false)
     private String password;
 }

@@ -1,5 +1,7 @@
 package com.example.todoapp.controller;
 
+//ユーザー登録やログインのリクエストをWebから受け付け、それぞれの処理を呼び出す窓口。
+
 import com.example.todoapp.domain.User;
 import com.example.todoapp.service.UserService;
 import com.example.todoapp.util.JwtUtil;

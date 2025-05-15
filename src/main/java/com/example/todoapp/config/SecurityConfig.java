@@ -1,5 +1,7 @@
 package com.example.todoapp.config;
 
+//ユーザーのパスワードを安全な形式で保存するための設定。
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
