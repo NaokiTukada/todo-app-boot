@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
         User user = userOptional.get();
-        // Spring Security の UserDetails を実装したオブジェクトを返す
+        
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 }
