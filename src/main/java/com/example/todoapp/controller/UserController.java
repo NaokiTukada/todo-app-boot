@@ -64,6 +64,9 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // バリデーションエラーなど
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT); // メールアドレス重複など
+        } catch (Exception e) {
+            // その他の予期せぬエラー
+            return new ResponseEntity<>("新規登録処理中にエラーが発生しました", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -72,26 +75,26 @@ public class UserController {
     String email = loginRequest.get("email");
     String password = loginRequest.get("password");
 
-    try {
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(email, password)
-        );
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        String jwt = jwtUtil.generateToken(userDetails);
+        try {
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+            );
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            String jwt = jwtUtil.generateToken(userDetails);
 
-        // 追加:最終ログイン日時を更新
-        userService.findByEmail(email).ifPresent(userService::updateLastLogin);
+            // 追加:最終ログイン日時を更新
+            userService.findByEmail(email).ifPresent(userService::updateLastLogin);
 
-        return ResponseEntity.ok(Map.of("token", jwt)); // ログイン成功時に JWT を返す
-    } catch (UsernameNotFoundException e) {
-        return new ResponseEntity<>("メールアドレス、パスワードが誤っている可能性があります", HttpStatus.UNAUTHORIZED);    
-    } catch (AuthenticationException e) {
-        return new ResponseEntity<>("メールアドレス、パスワードが誤っている可能性があります", HttpStatus.UNAUTHORIZED);
-    } catch (Exception e) {
-        // その他の予期せぬエラー
-        return new ResponseEntity<>("ログイン処理中にエラーが発生しました", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.ok(Map.of("token", jwt)); // ログイン成功時に JWT を返す
+        } catch (UsernameNotFoundException e) {
+            return new ResponseEntity<>("メールアドレス、パスワードが誤っている可能性があります", HttpStatus.UNAUTHORIZED);    
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>("メールアドレス、パスワードが誤っている可能性があります", HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            // その他の予期せぬエラー
+            return new ResponseEntity<>("ログイン処理中にエラーが発生しました", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
     // リクエストボディを受け取るためのクラス
     @Data
