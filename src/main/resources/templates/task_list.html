@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>習慣ToDoリスト</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="header-container">
+        <h1>習慣ToDoリスト</h1>
+        <div class="account-info">
+            <p>メールアドレス: <span th:text="${userEmail}"></span></p>
+        </div>
+        <a th:href="@{/logout}">ログアウト</a>
+    </div>
+    <table style="height: 30px;"> <thead>
+            <tr style="height: 30px;"> <th style="height: 30px;">目標名</th> <th style="height: 30px;">予定時刻</th>
+                <th style="height: 30px;">設定日</th>
+                <th style="height: 30px;">連続日数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="task : ${tasks}" class="task-item" style="height: 30px;"> <td style="height: 30px;">
+                    <form th:action="@{/tasks/{taskId}/toggle(taskId=${task.taskId})}" method="post">
+                        <input type="checkbox" name="completed" th:checked="${#lists.contains(completedTaskIds, task.taskId)}" onchange="this.form.submit()">
+                    </form>
+                </td>
+                <td style="height: 30px;"><span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''"></span></td>
+                <td style="height: 30px;"><span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'yyyy/MM/dd HH:mm')}"></span></td>
+                <td style="height: 30px;"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
+                <td style="height: 30px;"><span th:text="${streakCount}"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:text="${'連続達成日数: ' + streakCount}"></p>
+    <form th:if="${showResetButton}" th:action="@{/tasks/reset-and-count}" method="post">
+        <button type="submit">日付変更処理</button>
+    </form>
+</body>
+</html>
