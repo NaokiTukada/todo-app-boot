@@ -20,12 +20,18 @@ public class UserService {
 
     @Transactional
     public User registerUser(String email, String password) {
+        if (!isValidEmailFormat(email)) {
+            throw new IllegalArgumentException("XXXX@XXX.XXXの形式で入力してください");
+        }
+        if (password == null || password.length() < 8) {
+            throw new IllegalArgumentException("パスワードは８文字以上で設定してください");
+        }
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("このメールアドレスは既に登録されています。");
         }
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password)); 
+        newUser.setPassword(passwordEncoder.encode(password));
         return userRepository.save(newUser);
     }
 
@@ -35,5 +41,9 @@ public class UserService {
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    private boolean isValidEmailFormat(String email) {
+        return email != null && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 }
