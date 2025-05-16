@@ -78,6 +78,10 @@ public class UserController {
         );
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         String jwt = jwtUtil.generateToken(userDetails);
+
+        // 追加:最終ログイン日時を更新
+        userService.findByEmail(email).ifPresent(userService::updateLastLogin);
+
         return ResponseEntity.ok(Map.of("token", jwt)); // ログイン成功時に JWT を返す
     } catch (UsernameNotFoundException e) {
         return new ResponseEntity<>("メールアドレス、パスワードが誤っている可能性があります", HttpStatus.UNAUTHORIZED);    

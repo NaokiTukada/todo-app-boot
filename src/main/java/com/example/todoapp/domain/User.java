@@ -1,5 +1,7 @@
 package com.example.todoapp.domain;
 
+import java.time.LocalDateTime;
+
 //「todoapp_db」データベースの「User」テーブルの構造。
 
 import jakarta.persistence.*;
@@ -20,4 +22,6 @@ public class User {
 
     @Column(length = 256, nullable = false)
     private String password;
+
+    private LocalDateTime lastLogin;//最終ログイン日時
 }
