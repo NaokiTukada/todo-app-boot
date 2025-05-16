@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "Task")
 @Data
 
 public class Task {
@@ -21,13 +21,14 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;   
 
     @PrePersist
     protected void onCreate() {

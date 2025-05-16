@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "task_completions")
+@Table(name = "Task_Completion")
 @Data
 public class TaskCompletion {
 
@@ -21,6 +21,6 @@ public class TaskCompletion {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "completed_at", nullable = false)
     private LocalDateTime completedAt;
 }
