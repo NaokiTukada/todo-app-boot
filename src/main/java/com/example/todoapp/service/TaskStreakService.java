@@ -18,8 +18,6 @@ import java.util.Optional;
 @Service
 public class TaskStreakService {
 
-    @Autowired
-    private TaskRepository taskRepository;
 
     @Autowired
     private TaskStreakRepository taskStreakRepository;
@@ -27,8 +25,6 @@ public class TaskStreakService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private TaskCompletionRepository taskCompletionRepository;
 
     //このユーザーが目標に対して何日連続で達成したか
     public TaskStreak getOrCreateTaskStreak(User user, Task task) {
@@ -40,8 +36,6 @@ public class TaskStreakService {
             newTaskStreak.setUser(user);
             newTaskStreak.setCurrentStreak(0);
             newTaskStreak.setLastCompletionDate(null);
-            newTaskStreak.setAllTasksCurrentStreak(0);
-            newTaskStreak.setLastAllTasksCompletionDate(null);
             return taskStreakRepository.save(newTaskStreak);
         });
     }
