@@ -2,14 +2,14 @@ package com.example.todoapp.domain;
 
 import java.time.LocalDateTime;
 
-//「todoapp_db」データベースの「User」テーブルの構造。
+//「todoapp_db」データベースの「users」テーブルの構造。
 
 import jakarta.persistence.*;
 
 import lombok.*;
 
 @Entity
-@Table(name = "User") // テーブル名はUser
+@Table(name = "users") // テーブル名はusers
 @Data
 public class User {
 

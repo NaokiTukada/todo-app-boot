@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -37,27 +35,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest) {
-        List<String> errors = new ArrayList<>();
 
-        // パターン別、エラーメッセージ
-        if (!isValidEmail(registrationRequest.getEmail())) {
-            errors.add("XXXX@XXX.XXXの形式で入力してください");
-        }
-        if (registrationRequest.getPassword() == null || registrationRequest.getPassword().length() < 8) {
-            errors.add("パスワードは８文字以上で設定してください");
-        }
-        if (!registrationRequest.getPassword().equals(registrationRequest.getConfirmPassword())) {
-            errors.add("パスワードと確認用が異なってる可能性があります");
-        }
-
-        if (!errors.isEmpty()) {
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST); // エラーメッセージと適切なステータスコードを返す
-        }
 
         try {
             User registeredUser = userService.registerUser(
                 registrationRequest.getEmail(),
-                registrationRequest.getPassword()
+                registrationRequest.getPassword(),
+                registrationRequest.getConfirmPassword()
             );
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED); // 登録成功
         } catch (IllegalArgumentException e) {
@@ -72,8 +56,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
-    String email = loginRequest.get("email");
-    String password = loginRequest.get("password");
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
 
         try {
             authenticationManager.authenticate(
@@ -102,10 +86,5 @@ public class UserController {
         private String email;
         private String password;
         private String confirmPassword;
-    }
-
-    // メールアドレスの形式をチェックするメソッド
-    private boolean isValidEmail(String email) {
-        return email != null && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 }

@@ -20,15 +20,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User registerUser(String email, String password) {
+    public User registerUser(String email, String password, String confirmPassword) {
         if (!isValidEmailFormat(email)) {
             throw new IllegalArgumentException("XXXX@XXX.XXXの形式で入力してください");
         }
         if (password == null || password.length() < 8) {
             throw new IllegalArgumentException("パスワードは８文字以上で設定してください");
         }
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("このメールアドレスは既に登録されています。");
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("パスワードと確認用が異なってる可能性があります");
         }
         User newUser = new User();
         newUser.setEmail(email);
@@ -50,6 +50,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // メールアドレスの形式をチェックするメソッド
     private boolean isValidEmailFormat(String email) {
         return email != null && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
