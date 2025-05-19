@@ -14,8 +14,9 @@ https://drive.google.com/drive/folders/1QjzJ9VN7L_G_fvTh885Sfn-unPxVzsaf
 1. MySQLに新しくDBを作成する
     - `mysql -uroot -p`
     - `create database <DB名>;`
-1. リポジトリのルートディレクトリにある.env.exampleファイルを複製して.envファイルを作る
-    - ファイルの中身の各行の右辺は各自のローカル環境に合わせて変更する
+1. リポジトリのルートディレクトリにある.env.exampleファイルを複製して同じ階層に.envファイルを作る
+    - リポジトリのルートディレクトリに.env.exampleファイルと.envファイルが並べばOK
+1. .envファイルの中身の各行の右辺は各自のローカル環境に合わせて変更する
 
 # ローカルでの実行手順
 1. MySQLを起動する
