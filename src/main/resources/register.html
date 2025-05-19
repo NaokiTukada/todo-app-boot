@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<!--新規登録画面のHTMLです-->
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー登録</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            position: relative;
+            width: 1440px;
+            height: 1024px;
+            background: #FFFFFF;
+            border: 1px solid #000000;
+            margin: 0; /* デフォルトのマージンをリセット */
+            padding: 0; /* デフォルトのパディングをリセット */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            width: 1440px;
+            height: 1024px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            position: absolute;
+            width: 473px;
+            height: 77px;
+            left: 117px;
+            top: 105px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 64px;
+            line-height: 77px;
+            color: #000000;
+        }
+
+        .registration-title {
+            position: absolute;
+            width: 385px;
+            height: 165px;
+            left: 527px;
+            top: 260px;
+            font-family: 'Inknut Antiqua';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 64px;
+            line-height: 165px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+            border: 1px solid #000000;
+        }
+
+        .form-group {
+            position: absolute;
+            display: flex;
+            align-items: center;
+        }
+
+        .label {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 48px;
+            line-height: 58px;
+            text-align: justify;
+            text-decoration-line: underline;
+            color: #000000;
+            margin-right: 20px;
+        }
+
+        #email-group {
+            left: 85px;
+            top: 458px;
+        }
+
+        #password-group {
+            left: 181px;
+            top: 556px;
+        }
+
+        #confirm-password-group {
+            left: 248px;
+            top: 676px;
+            align-items: center; /* 確認用ラベルを中央に配置 */
+        }
+
+        .input-field {
+            box-sizing: border-box;
+            width: 450px;
+            height: 50px;
+            background: #D9D9D9;
+            border: 3px solid #000000;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #password-note {
+            position: absolute;
+            width: 624px;
+            height: 77px;
+            left: 495px;
+            top: 599px;
+            font-family: 'Inknut Antiqua';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 30px;
+            line-height: 77px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #000000;
+        }
+
+        #error-message {
+            position: absolute;
+            width: 239px;
+            height: 77px;
+            left: 600px;
+            top: 742px;
+            font-family: 'Inknut Antiqua';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 30px;
+            line-height: 77px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #FF0000;
+            border: 1px solid #FF0707;
+        }
+
+        .button-group {
+            position: absolute;
+            display: flex;
+            gap: 20px;
+            bottom: 50px; /* 画面下部に配置 */
+            right: 50px; /* 画面右端に配置 */
+        }
+
+        .button {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 44px;
+            gap: 10px;
+            width: 160px;
+            height: 50px;
+            background: #D9D9D9;
+            border: 3px solid #000000;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 36px;
+            line-height: 44px;
+            color: #000000;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>習慣Todoリスト</h1>
+        <div class="registration-title">新規登録</div>
+
+        <div class="form-group" id="email-group">
+            <label for="email" class="label">メールアドレス</label>
+            <input type="email" id="email" class="input-field">
+        </div>
+
+        <div class="form-group" id="password-group">
+            <label for="password" class="label">パスワード</label>
+            <input type="password" id="password" class="input-field">
+        </div>
+        <div id="password-note">※パスワードは８文字以上で設定してください</div>
+
+        <div class="form-group" id="confirm-password-group">
+            <label for="confirmPassword" class="label">確認用</label>
+            <input type="password" id="confirmPassword" class="input-field">
+        </div>
+
+        <div id="error-message">エラーメッセージ</div>
+
+        <div class="button-group">
+            <a href="#" class="button">戻る</a>
+            <button type="submit" class="button" onclick="registerUser()">完了</button>
+        </div>
+    </div>
+
+    <script>
+        function registerUser() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.textContent = '処理中...'; // 初期メッセージ
+
+            fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password, confirmPassword })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.json().then(error => {
+                        throw new Error(Array.isArray(error) ? error.join('\n') : error);
+                    });
+                }
+            })
+            .then(data => {
+                alert('登録が完了しました！');
+                // 登録成功後の処理 (例: ログイン画面へのリダイレクト)
+                window.location.href = '/login.html';
+            })
+            .catch(error => {
+                console.error('登録エラー:', error.message);
+                errorMessageDiv.textContent = error.message;
+            });
+        }
+    </script>
+</body>
+</html>
