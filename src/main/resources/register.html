@@ -1,79 +1,307 @@
 <!DOCTYPE html>
-
-<!--新規登録画面のHTMLです-->
-
 <html lang="ja">
 <head>
-    <!--文字コーディングをUTF-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--ページの幅をデバイスの画面幅に合わせる。また、ページの初期表示時の拡大率を1.0倍に設定する。-->
-    <title>新規登録</title> <!--タイトル-->
-    <link rel="stylesheet" href="style.css"> <!--rel="stylesheet" は、読み込むファイルがスタイルシートであることを示し、href="style.css" は、読み込むCSSファイルのパス-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録 - 習慣Todoリスト</title>
     
+    link rel="stylesheet" href="register.css" />
+    <style>
+        /* New Registration Screen */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            /* Removed overflow: hidden to allow scrolling if content overflows */
+        }
+
+        .container {
+            box-sizing: border-box;
+            position: relative;
+            width: 1440px;
+            height: 1024px;
+            background: #FFFFFF;
+            border: 1px solid #000000;
+            /* Removed overflow: hidden to allow scrolling if content overflows */
+        }
+
+        /* Application Title (習慣Todoリスト) */
+        .app-title {
+            position: absolute;
+            width: 473px;
+            height: 77px;
+            left: 117px;
+            top: 105px;
+            font-family: 'Inter'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 64px;
+            line-height: 77px;
+            color: #000000;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Page Subtitle (新規登録) */
+        .page-subtitle {
+            box-sizing: border-box;
+            position: absolute;
+            width: 385px;
+            height: 165px;
+            left: 527px;
+            top: 260px;
+            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 64px;
+            line-height: 165px;
+            color: #000000;
+            /* Removed border: 1px solid #000000; */ /* 黒い枠線を削除 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Common styles for input field labels */
+        .label {
+            position: absolute;
+            height: 58px;
+            font-family: 'Inter'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 48px;
+            line-height: 58px;
+            color: #000000;
+            text-decoration-line: underline;
+            display: flex;
+            align-items: center;
+            text-align: justify;
+        }
+
+        /* Email label specific positioning */
+        .email-label {
+            width: 336px;
+            left: 85px;
+            top: 458px;
+        }
+
+        /* Password label specific positioning */
+        .password-label {
+            width: 240px;
+            left: 181px;
+            top: 556px;
+        }
+
+        /* Confirm password label specific positioning */
+        .confirm-label {
+            position: absolute;
+            width: 173px;
+            height: 58px;
+            left: 248px;
+            top: 676px;
+            font-family: 'Inter'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 48px;
+            line-height: 58px;
+            text-align: center;
+            letter-spacing: 0.3em;
+            text-decoration-line: underline;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap; /* テキストが改行されないように */
+        }
+
+        /* Common styles for input fields */
+        .input {
+            box-sizing: border-box;
+            position: absolute;
+            width: 450px;
+            height: 50px;
+            left: 495px;
+            background: #D9D9D9;
+            border: 3px solid #000000;
+            padding: 0 15px;
+            font-size: 24px;
+        }
+
+        /* Email input field specific positioning */
+        .email-input {
+            top: 462px;
+        }
+
+        /* Password input field specific positioning */
+        .password-input {
+            top: 560px;
+        }
+
+        /* Confirm input field specific positioning */
+        .confirm-input {
+            top: 684px;
+        }
+
+        /* Password note */
+        .password-note {
+            position: absolute;
+            width: 624px;
+            height: 77px;
+            left: 495px;
+            top: 599px;
+            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 30px;
+            line-height: 77px;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Error message (initially hidden as no JavaScript is used) */
+        .error-message {
+            position: absolute;
+            width: 239px;
+            height: 77px;
+            left: 600px;
+            top: 742px;
+            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 30px;
+            line-height: 77px;
+            color: #FF0000;
+            border: 1px solid #FF0707;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: none; /* Always hidden without JavaScript */
+        }
+
+        /* Common button styles */
+        .button {
+            box-sizing: border-box;
+            position: absolute;
+            width: 160px;
+            height: 50px;
+            background: #D9D9D9;
+            border: 3px solid #000000;
+            font-family: 'Inter'; /* User specified font */
+            font-style: normal;
+            font-weight: 400;
+            font-size: 36px;
+            line-height: 44px; /* Adjust line-height to fit text horizontally */
+            color: #000000;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.2s ease;
+            white-space: nowrap; /* ボタン内のテキストが改行されないように */
+        }
+
+        /* Back button specific positioning and padding */
+        .back-button {
+            left: 964px;
+            top: 831px;
+            padding: 24px 44px;
+        }
+
+        /* Complete button specific positioning and padding */
+        .complete-button {
+            left: 1196px;
+            top: 831px;
+            padding: 29px 67px;
+        }
+
+        /* Button hover effect */
+        .button:hover {
+            background-color: #bfbfbf;
+        }
+
+        /* Additional CSS elements from user's previous input (uncommented and added to HTML) */
+        .text-element-0px-height {
+            position: absolute;
+            width: 0px;
+            height: 96px;
+            left: 550px;
+            top: 638px;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 40px;
+            line-height: 48px;
+            text-align: center;
+            color: #000000;
+        }
+
+        .text-element-21px-width {
+            position: absolute;
+            width: 21px;
+            height: 73px;
+            left: 483px;
+            top: 613px;
+        }
+
+        /* Removed .rectangle-15 as it was obstructing the input field */
+        /*
+        .rectangle-15 {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: 480px;
+            top: 730px;
+            background-color: lightgray;
+        }
+        */
+
+        .password-line {
+            position: absolute;
+            width: 74px;
+            height: 0px; /* Vertical line */
+            left: 421px;
+            top: 585px;
+            opacity: 0.01;
+            border: 1px solid #000000;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>習慣Todoリスト</h1>
-        <div class="registration-title">新規登録</div>
+        <h1 class="app-title">習慣Todoリスト</h1>
+        <h2 class="page-subtitle">新規登録</h2>
 
-        <div class="form-group" id="email-group">
-            <label for="email" class="label">メールアドレス</label>
-            <input type="email" id="email" class="input-field">
-        </div>
+        <form class="registration-form">
+            <label for="email" class="label email-label">メールアドレス</label>
+            <input type="email" id="email" class="input email-input" />
 
-        <div class="form-group" id="password-group">
-            <label for="password" class="label">パスワード</label>
-            <input type="password" id="password" class="input-field">
-        </div>
-        <div id="password-note">※パスワードは８文字以上で設定してください</div>
+            <label for="password" class="label password-label">パスワード</label>
+            <input type="password" id="password" class="input password-input" />
+            <p class="password-note">※パスワードは８文字以上で設定してください</p>
 
-        <div class="form-group" id="confirm-password-group">
-            <label for="confirmPassword" class="label">確認用</label>
-            <input type="password" id="confirmPassword" class="input-field">
-        </div>
+            <label for="confirm" class="label confirm-label">確認用</label>
+            <input type="password" id="confirm" class="input confirm-input" />
 
-        <div id="error-message">エラーメッセージ</div>
+            <p class="error-message">エラーメッセージ</p>
 
-        <div class="button-group">
-            <a href="#" class="button">戻る</a>
-            <button type="submit" class="button" onclick="registerUser()">完了</button>
-        </div>
+            <div class="button-wrapper">
+                <button type="button" class="button back-button">戻る</button>
+                <button type="button" class="button complete-button">完了</button>
+            </div>
+        </form>
+
+        <div class="text-element-0px-height"></div>
+        <div class="text-element-21px-width"></div>
+        <div class="password-line"></div>
     </div>
-
-    <script>
-        function registerUser() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorMessageDiv = document.getElementById('error-message');
-            errorMessageDiv.textContent = '処理中...'; // 初期メッセージ
-
-            fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password, confirmPassword })
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.json().then(error => {
-                        throw new Error(Array.isArray(error) ? error.join('\n') : error);
-                    });
-                }
-            })
-            .then(data => {
-                alert('登録が完了しました！');
-                // 登録成功後の処理 (例: ログイン画面へのリダイレクト)
-                window.location.href = '/login.html';
-            })
-            .catch(error => {
-                console.error('登録エラー:', error.message);
-                errorMessageDiv.textContent = error.message;
-            });
-        }
-    </script>
 </body>
 </html>
