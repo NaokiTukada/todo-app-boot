@@ -22,10 +22,7 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "schaduled_time")
-    private LocalDateTime schaduledTime;
-
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "completed_at")
