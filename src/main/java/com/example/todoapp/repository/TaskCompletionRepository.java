@@ -1,4 +1,4 @@
-package com.example.todoapp.repository;
+repository;
 
 import com.example.todoapp.domain.TaskCompletion;
 import com.example.todoapp.domain.User;
