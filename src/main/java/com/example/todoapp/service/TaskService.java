@@ -54,7 +54,7 @@ public class TaskService {
 
 
     //完了状態の時未完了状態に。未完了状態の時完了に(この時、完了時間をつける)！
-    public void toggleTaskCompletion(Long taskId, User user) {
+    public void toggleTaskCompletion(Long taskId) {
     Optional<Task> optionalTask = taskRepository.findById(taskId);
     if (optionalTask.isEmpty()) return;
     Task task = optionalTask.get();
