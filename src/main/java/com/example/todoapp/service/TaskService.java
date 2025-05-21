@@ -49,7 +49,7 @@ public class TaskService {
 
     //あるユーザーが持ってるすべてのタスクを取得
     public List<Task> findAllByUser(User user){
-        return taskRepository.findByUserEntity(user);
+        return taskRepository.findByUser(user);
     }
 
 
@@ -72,7 +72,7 @@ public class TaskService {
 
     //今日初めてログインする時に連続達成日数のカウントするメソッドと今日初めてログインするときに完了状態ならばリセットするメソッドの統合
     public void whenDateChange(User user){
-        List<Task> tasks = taskRepository.findAllByUser(user);
+        List<Task> tasks = taskRepository.findByUser(user);
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
 
