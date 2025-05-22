@@ -38,6 +38,21 @@ public class TaskService {
     }
 
     //完了状態の時未完了状態に。未完了状態の時完了に(この時、完了時間をつける)！
+    public void toggleTaskCompletion(Long taskId) {
+    Optional<Task> optionalTask = taskRepository.findById(taskId);
+    if (optionalTask.isEmpty()) return;
+    Task task = optionalTask.get();
+
+    if (task.isCompleted()) {
+        task.setCompleted(false);
+
+    } else {
+        task.setCompleted(true);
+        task.setCompletedAt(LocalDateTime.now());
+    }
+
+    taskRepository.save(task);
+    }
 
     //今日初めてログインする時に連続達成日数のカウントするメソッドと今日初めてログインするときに完了状態ならばリセットするメソッドの統合
 
