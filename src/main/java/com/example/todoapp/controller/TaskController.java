@@ -1,28 +1,56 @@
 package com.example.todoapp.controller;
 
-import com.example.todoapp.domain.Task;
-import com.example.todoapp.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping; 
-
 import java.util.List;
+import java.util.Optional;
 
-@Controller
-@RequestMapping("/tasks")
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.todoapp.domain.Task;
+import com.example.todoapp.domain.User;
+import com.example.todoapp.repository.UserRepository;
+import com.example.todoapp.service.TaskService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RestController 
+@RequestMapping("api/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    
+    private final TaskService taskService;
+
+   
+    private final UserRepository userRepository;
+
+    @PostMapping
+
+
+    @GetMapping("/{id}")
+
 
     @GetMapping
-    public String ListTasks(Model model) {
-        List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
-        return "task_list";
-    }
+
+
+    @PutMapping("/{id}")
+ 
+
+    @DeleteMapping("/{id}")
+
+
     
+    @PutMapping("/{id}/toggle")
+
+
+
+    @PostMapping("/reset-daily/{userId}")
 
 }
