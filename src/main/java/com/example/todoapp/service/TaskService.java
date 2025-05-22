@@ -1,12 +1,12 @@
 package com.example.todoapp.service;
 
-import com.example.todoapp.domain.Task;
-import com.example.todoapp.repository.TaskRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.todoapp.domain.Task;
+import com.example.todoapp.repository.TaskRepository;
 
 @Service
 public class TaskService {
@@ -14,29 +14,31 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task creatTask(Task task){
+    //目標の追加INSERT
+    public Task createTask(Task task){
         return taskRepository.save(task);
     }
 
-    public  Optional<Task> getTaskById(Long id){
+    //idから目標を取得
+    public Optional<Task> getTaskById(Long id){
         return taskRepository.findById(id);
     }
 
-    public List<Task> getAllTasks(){
-        return taskRepository.findAll();
-    }
+    //tasksの全項目を取得する
 
-    public Task updateTask(Long id, Task updatedTask) {
-        Optional<Task> existingTask = taskRepository.findById(id);
-        if (existingTask.isPresent()) {
-            updatedTask.setTaskId(id); 
-            return taskRepository.save(updatedTask);
-        }
-        return null; 
-    }
+    
+    //UPDATE文(編集)
 
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
-    }
+
+    //目標の削除
+
+
+    //あるユーザーが持ってるすべてのタスクを取得
+
+
+    //完了状態の時未完了状態に。未完了状態の時完了に(この時、完了時間をつける)！
+
+
+    //今日初めてログインする時に連続達成日数のカウントするメソッドと今日初めてログインするときに完了状態ならばリセットするメソッドの統合
 
 }
