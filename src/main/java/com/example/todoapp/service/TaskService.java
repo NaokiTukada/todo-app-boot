@@ -1,6 +1,8 @@
 package com.example.todoapp.service;
 
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     //目標の追加INSERT
+  
 
 
     //idから目標を取得
@@ -41,17 +44,3 @@ public class TaskService {
     //今日初めてログインする時に連続達成日数のカウントするメソッドと今日初めてログインするときに完了状態ならばリセットするメソッドの統合
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
