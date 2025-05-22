@@ -39,7 +39,7 @@ public class TaskController {
         model.addAttribute("tasks", tasks);
 
         // 必要な変数をダミー値で追加（本来はサービス等から取得）
-        // model.addAttribute("userEmail", "dummy@example.com");
+        model.addAttribute("userEmail", "dummy@example.com");
         model.addAttribute("completedTaskIds", List.of());
         model.addAttribute("allTasksCompleted", false);
         model.addAttribute("allTasksStreakCount", 0);
