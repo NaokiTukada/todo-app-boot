@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録 - 習慣Todoリスト</title>
-    
-    link rel="stylesheet" href="register.css" />
     <style>
-        /* New Registration Screen */
+        /* 新規登録画面 */
         body {
             margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background-color: #f0f0f0;
-            /* Removed overflow: hidden to allow scrolling if content overflows */
         }
 
         .container {
@@ -25,17 +23,16 @@
             height: 1024px;
             background: #FFFFFF;
             border: 1px solid #000000;
-            /* Removed overflow: hidden to allow scrolling if content overflows */
         }
 
-        /* Application Title (習慣Todoリスト) */
+        /* アプリケーションタイトル (習慣Todoリスト) */
         .app-title {
             position: absolute;
             width: 473px;
             height: 77px;
             left: 117px;
             top: 105px;
-            font-family: 'Inter'; /* User specified font */
+            font-family: 'Inter'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 64px;
@@ -45,7 +42,7 @@
             align-items: center;
         }
 
-        /* Page Subtitle (新規登録) */
+        /* ページサブタイトル (新規登録) */
         .page-subtitle {
             box-sizing: border-box;
             position: absolute;
@@ -53,24 +50,24 @@
             height: 165px;
             left: 527px;
             top: 260px;
-            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 64px;
             line-height: 165px;
             color: #000000;
-            /* Removed border: 1px solid #000000; */ /* 黒い枠線を削除 */
+            /* 黒い枠線を削除 */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
         }
 
-        /* Common styles for input field labels */
+        /* 入力フィールドラベルの共通スタイル */
         .label {
             position: absolute;
             height: 58px;
-            font-family: 'Inter'; /* User specified font */
+            font-family: 'Inter'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 48px;
@@ -82,28 +79,28 @@
             text-align: justify;
         }
 
-        /* Email label specific positioning */
+        /* メールアドレスラベルの個別配置 */
         .email-label {
             width: 336px;
             left: 85px;
             top: 458px;
         }
 
-        /* Password label specific positioning */
+        /* パスワードラベルの個別配置 */
         .password-label {
             width: 240px;
             left: 181px;
             top: 556px;
         }
 
-        /* Confirm password label specific positioning */
+        /* 確認用パスワードラベルの個別配置 */
         .confirm-label {
             position: absolute;
             width: 173px;
             height: 58px;
             left: 248px;
             top: 676px;
-            font-family: 'Inter'; /* User specified font */
+            font-family: 'Inter'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 48px;
@@ -118,7 +115,7 @@
             white-space: nowrap; /* テキストが改行されないように */
         }
 
-        /* Common styles for input fields */
+        /* 入力フィールドの共通スタイル */
         .input {
             box-sizing: border-box;
             position: absolute;
@@ -131,29 +128,29 @@
             font-size: 24px;
         }
 
-        /* Email input field specific positioning */
+        /* メールアドレス入力フィールドの個別配置 */
         .email-input {
             top: 462px;
         }
 
-        /* Password input field specific positioning */
+        /* パスワード入力フィールドの個別配置 */
         .password-input {
             top: 560px;
         }
 
-        /* Confirm input field specific positioning */
+        /* 確認用入力フィールドの個別配置 */
         .confirm-input {
             top: 684px;
         }
 
-        /* Password note */
+        /* パスワードの注意書き */
         .password-note {
             position: absolute;
             width: 624px;
             height: 77px;
             left: 495px;
             top: 599px;
-            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 30px;
@@ -165,14 +162,14 @@
             text-align: center;
         }
 
-        /* Error message (initially hidden as no JavaScript is used) */
+        /* エラーメッセージ (JavaScriptを使用しないため、初期状態では非表示) */
         .error-message {
             position: absolute;
             width: 239px;
             height: 77px;
             left: 600px;
             top: 742px;
-            font-family: 'Inknut Antiqua'; /* User specified font */
+            font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 30px;
@@ -183,10 +180,10 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            display: none; /* Always hidden without JavaScript */
+            display: none; /* JavaScriptがないため、常に非表示 */
         }
 
-        /* Common button styles */
+        /* ボタンの共通スタイル */
         .button {
             box-sizing: border-box;
             position: absolute;
@@ -194,11 +191,11 @@
             height: 50px;
             background: #D9D9D9;
             border: 3px solid #000000;
-            font-family: 'Inter'; /* User specified font */
+            font-family: 'Inter'; /* ユーザー指定フォント */
             font-style: normal;
             font-weight: 400;
             font-size: 36px;
-            line-height: 44px; /* Adjust line-height to fit text horizontally */
+            line-height: 44px; /* テキストが横方向に収まるように行の高さを調整 */
             color: #000000;
             cursor: pointer;
             display: flex;
@@ -209,26 +206,26 @@
             white-space: nowrap; /* ボタン内のテキストが改行されないように */
         }
 
-        /* Back button specific positioning and padding */
+        /* 戻るボタンの個別配置とパディング */
         .back-button {
             left: 964px;
             top: 831px;
             padding: 24px 44px;
         }
 
-        /* Complete button specific positioning and padding */
+        /* 完了ボタンの個別配置とパディング */
         .complete-button {
             left: 1196px;
             top: 831px;
             padding: 29px 67px;
         }
 
-        /* Button hover effect */
+        /* ボタンのホバーエフェクト */
         .button:hover {
             background-color: #bfbfbf;
         }
 
-        /* Additional CSS elements from user's previous input (uncommented and added to HTML) */
+        /* ユーザーが提供したCSSの追加要素（HTMLに対応する要素を追加済み） */
         .text-element-0px-height {
             position: absolute;
             width: 0px;
@@ -252,22 +249,10 @@
             top: 613px;
         }
 
-        /* Removed .rectangle-15 as it was obstructing the input field */
-        /*
-        .rectangle-15 {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            left: 480px;
-            top: 730px;
-            background-color: lightgray;
-        }
-        */
-
         .password-line {
             position: absolute;
             width: 74px;
-            height: 0px; /* Vertical line */
+            height: 0px; /* 垂直線 */
             left: 421px;
             top: 585px;
             opacity: 0.01;
