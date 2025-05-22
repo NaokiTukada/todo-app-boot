@@ -21,7 +21,9 @@ public class TaskService {
  
 
     //tasksの全項目を取得する
-
+    public List<Task> getAllTasks(){
+        return taskRepository.findAll();
+    }
     
     //UPDATE文(編集)
     public Optional<Task> updateTask(Long id, Task updateTask) {
