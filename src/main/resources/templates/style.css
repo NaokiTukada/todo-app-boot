@@ -1,5 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #ffffff
@@ -23,10 +24,25 @@ body {
 
 h1 {
     color: #4CAF50;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+h1 {
+    color: #4CAF50;
     margin: 0;
+    font-size: 1.5em;
     font-size: 1.5em;
 }
 
+.account-info p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #555;
 .account-info p {
     margin: 0;
     font-size: 0.8em;
@@ -39,7 +55,13 @@ h1 {
     padding: 8px 12px;
     border: none;
     border-radius: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
     text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     font-size: 0.9em;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -76,7 +98,9 @@ tr.task-item td {
 }
 
 .task-actions {
+.task-actions {
     display: flex;
+    gap: 10px;
     gap: 10px;
 }
 
@@ -120,16 +144,27 @@ tr.task-item td {
 
 .material-icons {
     font-size: 18px;
+    background-color: #f8f8f8;
 }
 
+.material-icons {
+    font-size: 18px;
+}
+
+.task-edit-mode, .new-task-card .task-edit-mode {
 .task-edit-mode, .new-task-card .task-edit-mode {
     display: none;
     width: 100%;
     padding-top: 10px;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
+    padding-top: 10px;
+    flex-direction: column;
+    gap: 10px;
 }
 
+.task-card.editing .task-display-mode {
 .task-card.editing .task-display-mode {
     display: none;
 }
@@ -157,13 +192,41 @@ tr.task-item td {
     font-size: 1em;
     width: calc(100% - 20px);
     box-sizing: border-box;
+.task-card.editing .task-edit-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
+.task-edit-mode form, .new-task-card form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.task-edit-mode input[type="text"],
+.task-edit-mode input[type="time"],
+.new-task-card input[type="text"],
+.new-task-card input[type="time"]{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+}
+
+.task-edit-mode button, .new-task-card button {
+    padding: 10px 15px;
 .task-edit-mode button, .new-task-card button {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
     font-size: 1em;
     transition: background-color 0.3s ease;
     align-self: flex-start;
@@ -188,6 +251,7 @@ tr.task-item td {
 }
 
 .new-task-card.hidden {
+.new-task-card.hidden {
     display: none;
 }
 
@@ -204,7 +268,13 @@ tr.task-item td {
     width: auto;
 }
 
+
 .button-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     width: 100%;
     max-width: 800px;
     display: flex;
@@ -218,6 +288,8 @@ tr.task-item td {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
     font-size: 1em;
     transition: background-color 0.3s ease;
 }
