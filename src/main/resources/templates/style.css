@@ -2,12 +2,12 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ffffff
 }
 
 .header-container {
-    background-color: #333;
-    color: white;
+    background-color: #000000;
+    color: #ffffff;
     padding: 10px;
     text-align: center;
     display: flex;
@@ -25,7 +25,7 @@ body {
 }
 
 .logout-button {
-    background-color: #f44336;
+    background-color: #f33e31;
     color: white;
     padding: 8px 16px;
     text-decoration: none;
@@ -34,28 +34,33 @@ body {
 }
 
 .logout-button:hover {
-    background-color: #d32f2f;
+    background-color: #f44336;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: white;
+    background-color: #ffffff;
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 }
 
 tbody tr:nth-child(odd) {
-    background-color: #f9f9f9;
+    background-color: whitesmoke;
+}
+
+tr.task-item td {
+    /* 必要であれば、ここに共通のtdスタイルを追加できます */
+    /* 現在はth, tdルールで定義されているため、追加のスタイルがなければ空でも問題ありません */
 }
 
 .action-buttons {
@@ -63,26 +68,28 @@ tbody tr:nth-child(odd) {
     gap: 5px;
 }
 
-.edit-button, .delete-button {
-    padding: 5px 10px;
+.button-style{
     border: none;
     border-radius: 5px;
     font-size: 12px;
+}
+    .edit-button, .delete-button {
+    padding: 5px 10px;
     cursor: pointer;
 }
 
 .edit-button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #09ff00;
+    color: #ffffff;
 }
 
 .edit-button:hover {
-    background-color: #45a049;
+    background-color: #09ff00;
 }
 
 .delete-button {
     background-color: #f44336;
-    color: white;
+    color: #ffffff;
 }
 
 .delete-button:hover {
@@ -117,21 +124,21 @@ tbody tr:nth-child(odd) {
 }
 
 .edit-ok-button {
-    background-color: #2196F3;
-    color: white;
+    background-color: #06dcf8;
+    color: #ffffff;
 }
 
 .edit-ok-button:hover {
-    background-color: #1976D2;
+    background-color: #06dcf8;
 }
 
 .edit-cancel-button {
-    background-color: #f44336;
-    color: white;
+    background-color: #ff1807;
+    color: #ffffff;
 }
 
 .edit-cancel-button:hover {
-    background-color: #d32f2f;
+    background-color: #ff1807;
 }
 
 .new-row {
@@ -145,7 +152,7 @@ tbody tr:nth-child(odd) {
 .new-task-title-input, .new-task-duedate-input {
     padding: 8px;
     margin-right: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #d3d3d3;
     border-radius: 5px;
     font-size: 12px;
     width: auto;
@@ -155,7 +162,7 @@ tbody tr:nth-child(odd) {
     text-align: center;
 }
 
-#createButton {
+#create-button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -165,23 +172,23 @@ tbody tr:nth-child(odd) {
 }
 
 #createButton {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #69ff64;
+    color: #ffffff;
 }
 
 #createButton:hover {
-    background-color: #45a049;
+    background-color: #69ff64
 }
 
 .all-completed {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #ffffff;
+    color: #098f04;
     padding: 10px;
     margin-top: 20px;
-    border: 1px solid #c3e6cb;
+    border: 1px solid #ffffff;
     border-radius: 5px;
 }
 .completed{
     text-decoration: line-through;
-    color: #888;
+    color: #807d7d;
 }

@@ -8,14 +8,9 @@
         <script th:inline="javascript">
             window.onload = function() {
                 function validateTaskTitles() {
-                    let taskTitles = document.querySelectorAll('span[data-task-title]');
-                    let hasEmptyTitle = false;
+                    const taskTitles = document.querySelectorAll('span[data-task-title]');
 
-                    taskTitles.forEach(function(titleElement) {
-                        if (titleElement.textContent.trim() === "") {
-                            hasEmptyTitle = true;
-                        }
-                    });
+                    const hasEmptyTitle = taskTitles.some((elem) => elem.textContent.trim() === "");
 
                     if (hasEmptyTitle) {
                         alert("目標名が空のタスクがあります。設定してください。");
@@ -98,7 +93,7 @@
             </thead>
             <tbody>
                 <tr th:each="task : ${tasks}" class="task-item" th:attr="data-task-id=${task.taskId}">
-                    <td class="display-mode">
+
                         <form th:action="@{/tasks/{taskId}/toggle(taskId=${task.taskId})}" method="post">
                             <input type="checkbox" name="completed" th:checked="${#lists.contains(completedTaskIds, task.taskId)}">
                         </form>
@@ -111,7 +106,8 @@
                     <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode"><span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></td>
                     <td class="display-mode action-buttons">
-                        <button class="edit-button">編集</button>
+                        <button class="button-style edit-button">EDIT</button>
+
                         <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
                             <button type="submit" class="delete-button">削除</button>
                         </form>
