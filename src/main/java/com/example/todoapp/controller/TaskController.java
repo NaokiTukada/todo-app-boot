@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.todoapp.domain.Task;
@@ -14,7 +16,7 @@ import com.example.todoapp.service.TaskService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/tasks")
 public class TaskController {
 
@@ -24,24 +26,33 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         Optional<User> userOpt = userRepository.findById(task.getUser().getUserId());
-        if (userOpt.isEmpty()) return ResponseEntity.notFound().build();
+        if (userOpt.isEmpty())
+            return ResponseEntity.notFound().build();
         task.setUser(userOpt.get());
         Task savedTask = taskService.createTask(task);
         return ResponseEntity.ok(savedTask);
     }
 
     @GetMapping
-    public List<Task> getAllTasks(@RequestParam Long userId) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        userOpt.ifPresent(taskService::whenDateChange);
-        return taskService.getAllTasks();
+    public String ListTasks(Model model) {
+        List<Task> tasks = taskService.getAllTasks();
+        model.addAttribute("tasks", tasks);
+
+        // 必要な変数をダミー値で追加（本来はサービス等から取得）
+        // model.addAttribute("userEmail", "dummy@example.com");
+        model.addAttribute("completedTaskIds", List.of());
+        model.addAttribute("allTasksCompleted", false);
+        model.addAttribute("allTasksStreakCount", 0);
+        model.addAttribute("showResetButton", false);
+
+        return "task_list";
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         Optional<Task> taskOpt = taskService.getTaskById(id);
         return taskOpt.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
