@@ -51,16 +51,6 @@ public class TaskController {
         taskService.toggleTaskCompletion(id);
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/reset-daily/{userId}")
-    public ResponseEntity<Void> resetDailyTasks(@PathVariable Long userId) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        taskService.whenDateChange(userOpt.get());
-        return ResponseEntity.ok().build();
-    }
     
 }
 
