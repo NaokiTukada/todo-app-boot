@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>習慣ToDoリスト</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="style.css">
+
+        <script th:inline="javascript">
+            window.onload = function() {
+                function validateTaskTitles() {
+                    let taskTitles = document.querySelectorAll('span[data-task-title]');
+                    let hasEmptyTitle = false;
+
+                    taskTitles.forEach(function(titleElement) {
+                        if (titleElement.textContent.trim() === "") {
+                            hasEmptyTitle = true;
+                        }
+                    });
+
+                    if (hasEmptyTitle) {
+                        alert("目標名が空のタスクがあります。設定してください。");
+                    }
+                }
+                validateTaskTitles();
+
+                document.querySelector('table').addEventListener('click', function(event) {
+                    let target = event.target;
+                    let row = target.closest('tr');
+
+                    if (target.type === 'checkbox') {
+                        target.closest('form').submit();
+                    }
+                    else if (target.classList.contains('edit-button')) {
+                        if (row) {
+                            row.classList.add('editing');
+                        }
+                    }
+                    else if (target.classList.contains('edit-ok-button')) {
+                        let inputTitle = row.querySelector('.edit-title-input');
+                        if (inputTitle.value.trim() === "") {
+                            alert("目標名を入力してください。");
+                            event.preventDefault();
+                        }
+                    }
+                    else if (target.classList.contains('edit-cancel-button')) {
+                        if (row) {
+                            row.classList.remove('editing');
+                        }
+                    }
+                });
+
+                let createButton = document.getElementById('createButton');
+                let newRow = document.getElementById('newRow');
+
+                if (createButton && newRow) {
+                    createButton.onclick = function() {
+                        newRow.classList.remove('hidden');
+                        newRow.classList.add('editing');
+                        newRow.querySelector('.new-task-title-input').focus();
+                    };
+                }
+
+                document.getElementById('newRowOkButton').onclick = function(event) {
+                    let inputTitle = document.getElementById('newRow').querySelector('.new-task-title-input');
+                    if (inputTitle.value.trim() === "") {
+                        alert("目標名を入力してください。");
+                        event.preventDefault();
+                    }
+                };
+
+                document.getElementById('newRowCancelButton').onclick = function() {
+                    newRow.classList.add('hidden');
+                    newRow.classList.remove('editing');
+                    newRow.querySelector('.new-task-title-input').value = '';
+                    newRow.querySelector('.new-task-duedate-input').value = '';
+                };
+            };
+        </script>
+    </head>
+    <body>
+        <div class="header-container">
+            <h1>習慣ToDoリスト</h1>
+            <div class="account-info">
+                <p>メールアドレス: <span th:text="${userEmail}"></span></p>
+            </div>
+            <a class="logout-button" th:href="@{/logout}">ログアウト</a>
+        </div>
+
+        <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
+            <thead>
+                <tr>
+                    <th>目標名</th>
+                    <th>予定時刻</th>
+                    <th>連続日数</th>
+                    <th>設定日</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task : ${tasks}" class="task-item" th:attr="data-task-id=${task.taskId}">
+                    <td class="display-mode">
+                        <form th:action="@{/tasks/{taskId}/toggle(taskId=${task.taskId})}" method="post">
+                            <input type="checkbox" name="completed" th:checked="${#lists.contains(completedTaskIds, task.taskId)}">
+                        </form>
+                        <span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''" data-task-title></span>
+                    </td>
+                    <td class="display-mode">
+                        <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'HH:mm')}"></span>
+                        <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
+                    </td>
+                    <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
+                    <td class="display-mode"><span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></td>
+                    <td class="display-mode action-buttons">
+                        <button class="edit-button">編集</button>
+                        <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
+                            <button type="submit" class="delete-button">削除</button>
+                        </form>
+                    </td>
+
+                    <td class="edit-mode" colspan="5">
+                        <form th:action="@{/tasks/{taskId}/update(taskId=${task.taskId})}" method="post">
+                            <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
+                            <input type="time" name="dueDate" th:value="${task.dueDate ? #temporals.format(task.dueDate, 'HH:mm') : ''}" placeholder="予定時刻" class="edit-duedate-input">
+                            <span>設定日: <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></span>
+                            <span>連続日数: <span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></span>
+                            <button type="submit" class="edit-ok-button">OK</button>
+                            <button type="button" class="edit-cancel-button">キャンセル</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr id="newRow" class="new-row hidden">
+                    <td colspan="5">
+                        <form th:action="@{/tasks/create}" method="post">
+                            <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
+                            <input type="time" name="dueDate" placeholder="予定時刻" class="new-task-duedate-input">
+                            <span>設定日: ー </span>
+                            <span>連続日数: 0日 </span>
+                            <button type="submit" id="newRowOkButton">OK</button>
+                            <button type="button" id="newRowCancelButton">キャンセル</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p th:text="${'全タスク連続達成日数: ' + allTasksStreakCount + '日'}"></p>
+        <p th:if="${allTasksCompleted}" class="all-completed-message">今日のタスクを全て達成しました！</p>
+
+        <div class="button-container">
+            <button id="createButton">新規作成</button>
+        </div>
+    </body>
+</html>

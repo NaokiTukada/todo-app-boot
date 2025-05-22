@@ -46,22 +46,27 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-
     @GetMapping("/{id}")
-
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        Optional<Task> taskOpt = taskService.getTaskById(id);
+        return taskOpt.map(ResponseEntity::ok)
+                      .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @PutMapping("/{id}")
- 
+     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        return taskService.updateTask(id, updatedTask)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @DeleteMapping("/{id}")
-
-
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
+    }
     
     @PutMapping("/{id}/toggle")
-
-
-
-    @PostMapping("/reset-daily/{userId}")
 
 }
 
