@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController 
-@RequestMapping("api/tasks")
+@RequestMapping("/tasks")
 public class TaskController {
 
     
