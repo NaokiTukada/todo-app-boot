@@ -1,6 +1,5 @@
 package com.example.todoapp.service;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.todoapp.domain.Task;
 import com.example.todoapp.domain.User;
-
 import com.example.todoapp.repository.TaskRepository;
 
 @Service
@@ -70,5 +68,39 @@ public class TaskService {
     }
 
     //今日初めてログインする時に連続達成日数のカウントするメソッドと今日初めてログインするときに完了状態ならばリセットするメソッドの統合
+    public void whenDateChange(User user){
+        List<Task> tasks = taskRepository.findByUser(user);
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+
+        for(Task task : tasks) {
+           
+            if(task.getLastStreakUpdated() != null && task.getLastStreakUpdated().isEqual(today)){
+                continue;
+            }
+            
+            if(task.isCompleted()&&
+                task.getCompletedAt() != null &&
+                task.getCompletedAt().toLocalDate().isEqual(yesterday)){
+                
+                task.setCurrentStreak(task.getCurrentStreak() + 1);
+            
+            }else{
+                task.setCurrentStreak(0);
+            }
+
+            if(task.isCompleted()&&
+                task.getCompletedAt() != null &&
+                task.getCompletedAt().toLocalDate().isEqual(yesterday)){
+
+                task.setCompleted(false);
+            }
+
+            task.setLastStreakUpdated(today);
+
+            taskRepository.save(task);
+            
+        }
+    }
 
 }
