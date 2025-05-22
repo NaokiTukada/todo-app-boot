@@ -1,7 +1,5 @@
 package com.example.todoapp.config;
 
-// フィルターはコメントアウトしてるから直して
-
 import com.example.todoapp.filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,8 +40,7 @@ public class SecurityConfig {
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // 🔴 フィルターはコメントアウト or 削除（開発時のみ）
-        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
