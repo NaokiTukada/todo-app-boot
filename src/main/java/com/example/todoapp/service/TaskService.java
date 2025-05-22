@@ -1,5 +1,7 @@
 package com.example.todoapp.service;
 
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +17,17 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     //目標の追加INSERT
-    public Task createTask(Task task){
-        return taskRepository.save(task);
-    }
+  
+
 
     //idから目標を取得
-    public Optional<Task> getTaskById(Long id){
-        return taskRepository.findById(id);
-    }
+ 
 
     //tasksの全項目を取得する
-
+    public List<Task> getAllTasks(){
+        return taskRepository.findAll();
+    }
+    
     
     //UPDATE文(編集)
 
