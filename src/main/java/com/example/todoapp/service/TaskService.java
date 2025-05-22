@@ -1,7 +1,5 @@
 package com.example.todoapp.service;
 
-
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     //目標の追加INSERT
-  
 
 
     //idから目標を取得
@@ -28,12 +25,20 @@ public class TaskService {
         return taskRepository.findAll();
     }
     
-    
     //UPDATE文(編集)
-
+    public Optional<Task> updateTask(Long id, Task updateTask) {
+        Optional<Task> existenceTask = taskRepository.findById(id);
+        if (existenceTask.isPresent()) {
+            updateTask.setTaskId(id);
+            return Optional.of(taskRepository.save(updateTask));
+        }
+        return Optional.empty();
+    }
 
     //目標の削除
-
+    public void deleteTask(Long id){
+        taskRepository.deleteById(id);
+    }
 
     //あるユーザーが持ってるすべてのタスクを取得
 
