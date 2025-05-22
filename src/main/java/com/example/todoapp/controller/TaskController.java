@@ -32,10 +32,19 @@ public class TaskController {
     private final UserRepository userRepository;
 
     @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        Optional<User> userOpt = userRepository.findById(task.getUser().getUserId());
+        if (userOpt.isEmpty()) return ResponseEntity.notFound().build();
 
+        task.setUser(userOpt.get());
+        Task savedTask = taskService.createTask(task);
+        return ResponseEntity.ok(savedTask);
+    }
 
     @GetMapping
-
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
@@ -56,12 +65,21 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
-
     
     @PutMapping("/{id}/toggle")
 
-
-
-    @PostMapping("/reset-daily/{userId}")
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
