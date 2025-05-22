@@ -1,5 +1,5 @@
 body {
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #ffffff
@@ -13,24 +13,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    border-radius: 8px;
 }
 
-.header-container h1 {
+h1 {
+    color: #4CAF50;
     margin: 0;
-    font-size: 24px;
+    font-size: 1.5em;
 }
 
-.account-info {
-    font-size: 14px;
+.account-info p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #555;
 }
 
 .logout-button {
     background-color: #f33e31;
     color: white;
-    padding: 8px 16px;
-    text-decoration: none;
+    padding: 8px 12px;
+    border: none;
     border-radius: 5px;
-    font-size: 14px;
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .logout-button:hover {
@@ -63,9 +75,9 @@ tr.task-item td {
     /* 現在はth, tdルールで定義されているため、追加のスタイルがなければ空でも問題ありません */
 }
 
-.action-buttons {
+.task-actions {
     display: flex;
-    gap: 5px;
+    gap: 10px;
 }
 
 .button-style{
@@ -76,6 +88,11 @@ tr.task-item td {
     .edit-button, .delete-button {
     padding: 5px 10px;
     cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.85em;
     transition: background-color 0.3s ease;
     display: flex;
@@ -98,34 +115,58 @@ tr.task-item td {
 }
 
 .delete-button:hover {
-    background-color: #d32f2f;
+    background-color: #f8f8f8;
 }
 
-.edit-mode {
+.material-icons {
+    font-size: 18px;
+}
+
+.task-edit-mode, .new-task-card .task-edit-mode {
+    display: none;
+    width: 100%;
+    padding-top: 10px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-card.editing .task-display-mode {
     display: none;
 }
 
-.editing .display-mode {
-    display: none;
+.task-card.editing .task-edit-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.editing .edit-mode {
-    display: table-row;
-    /*display: flex;
-     flex-direction: row;
-    gap: 5px;*/
-}
-.editing .edit-mode input{
-    width: auto;
+.task-edit-mode form, .new-task-card form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.edit-ok-button, .edit-cancel-button {
-    padding: 5px 10px;
+
+.task-edit-mode input[type="text"],
+.task-edit-mode input[type="time"],
+.new-task-card input[type="text"],
+.new-task-card input[type="time"]{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+}
+
+.task-edit-mode button, .new-task-card button {
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    font-size: 12px;
     cursor: pointer;
-    margin-left: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
 }
 
 .edit-ok-button {
@@ -146,7 +187,7 @@ tr.task-item td {
     background-color: #ff1807;
 }
 
-.new-row {
+.new-task-card.hidden {
     display: none;
 }
 
@@ -162,18 +203,23 @@ tr.task-item td {
     font-size: 12px;
     width: auto;
 }
+
 .button-container {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     margin-top: 20px;
-    text-align: center;
 }
 
 #create-button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    font-size: 14px;
     cursor: pointer;
-    margin: 0 10px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
 #createButton {
