@@ -35,11 +35,15 @@ public class TaskService {
     }
     
     //正確なUPDATE文！もしidがあるならidのアップデートと新しいタスクの追加（上書き）
-    public Optional<Task> updateTask(Long id, Task updateTask) {
+    public Optional<Task> updateTask(Long id, Task updatedTask) {
         Optional<Task> existenceTask = taskRepository.findById(id);
         if (existenceTask.isPresent()) {
-            updateTask.setTaskId(id);
-            return Optional.of(taskRepository.save(updateTask));
+            Task existingTask = existenceTask.get();
+
+            existingTask.setTitle(updatedTask.getTitle());
+            existingTask.setDueDate(updatedTask.getDueDate());
+
+            return Optional.of(taskRepository.save(existingTask));
         }
         return Optional.empty();
     }
