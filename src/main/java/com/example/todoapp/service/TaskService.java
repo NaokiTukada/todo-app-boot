@@ -35,21 +35,15 @@ public class TaskService {
     }
     
     //正確なUPDATE文！もしidがあるならidのアップデートと新しいタスクの追加（上書き）
-    public Optional<Task> updateTask(Long id, Task updateTask) {
+    public Optional<Task> updateTask(Long id, Task updatedTask) {
         Optional<Task> existenceTask = taskRepository.findById(id);
         if (existenceTask.isPresent()) {
-            Task existing = existenceTask.get();
+            Task existingTask = existenceTask.get();
 
-            // titleが変更されていたらcreatedAtも更新
-            if (!existing.getTitle().equals(updateTask.getTitle())) {
-                existing.setTitle(updateTask.getTitle());
-                existing.setCreatedAt(LocalDateTime.now());
-            }
+            existingTask.setTitle(updatedTask.getTitle());
+            existingTask.setDueDate(updatedTask.getDueDate());
 
-            // dueDateは常に更新（変更の有無にかかわらず）
-            existing.setDueDate(updateTask.getDueDate());
-
-            return Optional.of(taskRepository.save(existing));
+            return Optional.of(taskRepository.save(existingTask));
         }
         return Optional.empty();
     }
