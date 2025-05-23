@@ -4,71 +4,316 @@
         <title>習慣ToDoリスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" href="style.css">
+        
 
-        <script th:inline="javascript">
-            window.onload = function() {
-                function validateTaskTitles() {
-                    const taskTitles = document.querySelectorAll('span[data-task-title]');
+        <script>
+            // --- ダミーデータ (サーバーからの初期データと仮定) ---
+            let tasks = [
+                { taskId: 'task1', title: '毎朝水を飲む', dueDate: '08:00', streakCount: 5, createdAt: '2025/05/17', completed: false },
+                { taskId: 'task2', title: '30分読書', dueDate: '21:00', streakCount: 2, createdAt: '2025/05/20', completed: true },
+                { taskId: 'task3', title: '筋トレする', dueDate: null, streakCount: 0, createdAt: '2025/05/22', completed: false }
+            ];
+            // 完了状態のタスクIDを保持するセット
+            let completedTaskIds = new Set(tasks.filter(t => t.completed).map(t => t.taskId));
+            // 全タスク連続達成日数 (フロントエンドでは変化しないダミー)
+            let allTasksStreakCount = 10;
+            // ユーザーメールアドレス (ダミー)
+            let userEmail = 'dummy@example.com';
+            // ----------------------------------------------------
 
-                    const hasEmptyTitle = taskTitles.some((elem) => elem.textContent.trim() === "");
+            function showCustomAlert(message) {
+                const modal = document.getElementById('customModal');
+                const modalMessage = document.getElementById('customModalMessage');
+                const modalOkButton = document.getElementById('customModalOk');
+                const modalCancelButton = document.getElementById('customModalCancel');
 
-                    if (hasEmptyTitle) {
-                        alert("目標名が空のタスクがあります。設定してください。");
-                    }
+                modalMessage.textContent = message;
+                modalCancelButton.style.display = 'none';
+                modalOkButton.textContent = 'OK';
+                modal.style.display = 'flex';
+
+                return new Promise(resolve => {
+                    modalOkButton.onclick = () => {
+                        modal.style.display = 'none';
+                        resolve(true);
+                    };
+                });
+            }
+
+            function showCustomConfirm(message) {
+                const modal = document.getElementById('customModal');
+                const modalMessage = document.getElementById('customModalMessage');
+                const modalOkButton = document.getElementById('customModalOk');
+                const modalCancelButton = document.getElementById('customModalCancel');
+
+                modalMessage.textContent = message;
+                modalCancelButton.style.display = 'inline-block';
+                modalOkButton.textContent = 'はい';
+                modalCancelButton.textContent = 'いいえ';
+                modal.style.display = 'flex';
+
+                return new Promise(resolve => {
+                    modalOkButton.onclick = () => {
+                        modal.style.display = 'none';
+                        resolve(true);
+                    };
+                    modalCancelButton.onclick = () => {
+                        modal.style.display = 'none';
+                        resolve(false);
+                    };
+                });
+            }
+
+            function updateAllTasksCompletedMessage() {
+                const allCheckboxes = document.querySelectorAll('tbody .task-item input[type="checkbox"][name="completed"]');
+                const completedMessage = document.getElementById('allTasksCompletedMessage');
+
+                const actualTaskCheckboxes = Array.from(allCheckboxes).filter(checkbox => {
+                    // 編集中の新規行はカウントしない
+                    const row = checkbox.closest('.task-item');
+                    return !row.classList.contains('new-dynamic-row');
+                });
+
+                if (actualTaskCheckboxes.length === 0) {
+                    completedMessage.style.display = 'none';
+                    return;
                 }
-                validateTaskTitles();
 
-                document.querySelector('table').addEventListener('click', function(event) {
+                const allChecked = actualTaskCheckboxes.every(checkbox => checkbox.checked);
+
+                if (allChecked) {
+                    completedMessage.style.display = 'block';
+                } else {
+                    completedMessage.style.display = 'none';
+                }
+            }
+
+            // タスクリストをHTMLにレンダリングする関数
+            function renderTasks() {
+                const tbody = document.querySelector('table tbody');
+                tbody.innerHTML = ''; // 既存のリストをクリア
+
+                tasks.forEach(task => {
+                    const row = document.createElement('tr');
+                    row.classList.add('task-item');
+                    if (task.completed) {
+                        // completed クラスはspanに適用されるが、th:classの代替として行にも仮で付与
+                        // row.classList.add('completed-row'); 
+                    }
+                    row.setAttribute('data-task-id', task.taskId);
+
+                    const formattedDueDate = task.dueDate ? task.dueDate : ' ー ';
+                    const formattedCreatedAt = task.createdAt;
+                    const isCompleted = task.completed;
+                    const streakCount = task.streakCount !== null ? task.streakCount + '日' : '0日';
+
+                    row.innerHTML = `
+                        <td class="display-mode">
+                            <form style="display:inline-block;">
+                                <input type="checkbox" name="completed" ${isCompleted ? 'checked' : ''}>
+                            </form>
+                            <span data-task-title class="${isCompleted ? 'completed' : ''}">${task.title}</span>
+                        </td>
+                        <td class="display-mode">
+                            <span>${formattedDueDate}</span>
+                        </td>
+                        <td class="display-mode"><span>${streakCount}</span></td>
+                        <td class="display-mode"><span>${formattedCreatedAt}</span></td>
+                        <td class="display-mode action-buttons">
+                            <button class="button-style edit-button">EDIT</button>
+                            <form class="delete-form">
+                                <button type="submit" class="delete-button">削除</button>
+                            </form>
+                        </td>
+
+                        <td class="edit-mode" colspan="5">
+                            <form>
+                                <input type="text" name="title" value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
+                                <input type="time" name="dueDate" value="${task.dueDate || ''}" placeholder="予定時刻" class="edit-duedate-input">
+                                <span>設定日: <span>${formattedCreatedAt}</span></span>
+                                <span>連続日数: <span>${streakCount}</span></span>
+                                <button type="button" class="edit-ok-button">OK</button>
+                                <button type="button" class="edit-cancel-button">キャンセル</button>
+                            </form>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                updateAllTasksCompletedMessage(); // レンダー後、メッセージの状態を更新
+            }
+
+
+            window.onload = function() {
+                // 初期表示データをレンダリング
+                renderTasks();
+                document.getElementById('userEmailDisplay').textContent = userEmail; // ダミーメールアドレス表示
+                document.getElementById('allTasksStreakCountDisplay').textContent = '全タスク連続達成日数: ' + allTasksStreakCount + '日'; // ダミー達成日数表示
+                updateAllTasksCompletedMessage(); // ページロード時にメッセージの状態を更新
+
+                // ログアウトボタン (フロントエンドのみなので機能なし)
+                document.querySelector('.logout-button').onclick = function(event) {
+                    event.preventDefault();
+                    showCustomAlert('ログアウトしました（フロントエンドのダミー機能です）。');
+                    // 実際にはここにサーバーへのログアウトリクエストを記述
+                };
+
+
+                document.querySelector('table').addEventListener('click', async function(event) {
                     let target = event.target;
                     let row = target.closest('tr');
 
+                    if (!row) return;
+
                     if (target.type === 'checkbox') {
-                        target.closest('form').submit();
+                        event.preventDefault(); // デフォルトのフォーム送信を防止
+
+                        const taskId = row.getAttribute('data-task-id');
+                        const isCompleted = target.checked;
+
+                        // ダミーデータ 'tasks' と completedTaskIds を更新
+                        const taskIndex = tasks.findIndex(t => t.taskId === taskId);
+                        if (taskIndex > -1) {
+                            tasks[taskIndex].completed = !tasks[taskIndex].completed; // 論理的な状態を更新
+                            if (tasks[taskIndex].completed) {
+                                completedTaskIds.add(taskId);
+                            } else {
+                                completedTaskIds.delete(taskId);
+                            }
+                        }
+
+                        // UIを直接更新
+                        target.checked = isCompleted; // チェックボックスの見た目を反映
+                        const taskTitleSpan = row.querySelector('span[data-task-title]');
+                        if (isCompleted) {
+                            taskTitleSpan.classList.add('completed');
+                        } else {
+                            taskTitleSpan.classList.remove('completed');
+                        }
+                        updateAllTasksCompletedMessage(); // 「全達成」メッセージを更新
                     }
                     else if (target.classList.contains('edit-button')) {
-                        if (row) {
-                            row.classList.add('editing');
+                        row.classList.add('editing');
+                        const inputTitle = row.querySelector('.edit-title-input');
+                        if (inputTitle) {
+                            inputTitle.focus();
                         }
                     }
                     else if (target.classList.contains('edit-ok-button')) {
                         let inputTitle = row.querySelector('.edit-title-input');
-                        if (inputTitle.value.trim() === "") {
-                            alert("目標名を入力してください。");
-                            event.preventDefault();
+                        if (inputTitle && inputTitle.value.trim() === "") {
+                            await showCustomAlert("目標名を入力してください。");
+                            return; // 処理を中断
                         }
+
+                        const taskId = row.getAttribute('data-task-id');
+                        const newTitle = inputTitle.value.trim();
+                        const newDueDate = row.querySelector('.edit-duedate-input').value;
+
+                        // ダミーデータ 'tasks' を更新
+                        const taskIndex = tasks.findIndex(t => t.taskId === taskId);
+                        if (taskIndex > -1) {
+                            tasks[taskIndex].title = newTitle;
+                            tasks[taskIndex].dueDate = newDueDate || null; // 空文字列はnullに変換
+                        }
+
+                        // UIを再レンダリングして変更を反映
+                        renderTasks();
+                        updateAllTasksCompletedMessage();
                     }
                     else if (target.classList.contains('edit-cancel-button')) {
-                        if (row) {
-                            row.classList.remove('editing');
+                        row.classList.remove('editing'); // 編集モードを解除
+                        // キャンセル時は変更を破棄するので、再レンダリングは不要
+                        updateAllTasksCompletedMessage();
+                    }
+                });
+
+                document.querySelector('table').addEventListener('submit', async function(event) {
+                    // 各フォームのデフォルト送信を防止 (新規作成のOKボタンを除く)
+                    if (!event.target.closest('.new-dynamic-row form') || !event.target.classList.contains('edit-ok-button')) {
+                        event.preventDefault();
+                    }
+
+                    if (event.target.classList.contains('delete-form')) {
+                        const row = event.target.closest('tr');
+                        const taskId = row.getAttribute('data-task-id');
+
+                        const confirmed = await showCustomConfirm('この目標を削除しますか？');
+                        if (confirmed) {
+                            // ダミーデータ 'tasks' からタスクを削除
+                            tasks = tasks.filter(t => t.taskId !== taskId);
+                            completedTaskIds.delete(taskId); // completed IDからも削除
+
+                            row.remove(); // DOMから行を削除
+                            updateAllTasksCompletedMessage(); // 「全達成」メッセージを更新
                         }
+                    } else if (event.target.closest('.new-dynamic-row form') && event.target.classList.contains('edit-ok-button')) {
+                        // 新規作成行のOKボタンが押された場合 (ダミーデータの追加)
+                        event.preventDefault(); // デフォルトのフォーム送信を防止
+
+                        const inputTitle = event.target.closest('form').querySelector('.edit-title-input');
+                        if (inputTitle && inputTitle.value.trim() === "") {
+                            await showCustomAlert("目標名を入力してください。");
+                            return;
+                        }
+
+                        const newTitle = inputTitle.value.trim();
+                        const newDueDate = event.target.closest('form').querySelector('.edit-duedate-input').value;
+                        const currentDate = new Date();
+                        const formattedDate = `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`;
+                        
+                        const newTaskId = `temp-${Date.now()}`;
+                        const newTask = {
+                            taskId: newTaskId,
+                            title: newTitle,
+                            dueDate: newDueDate || null,
+                            streakCount: 0, // ダミー
+                            createdAt: formattedDate,
+                            completed: false
+                        };
+                        tasks.unshift(newTask); // リストの先頭に追加
+
+                        event.target.closest('.new-dynamic-row').remove(); // 編集中の新規作成行を削除
+                        renderTasks(); // 全タスクを再レンダリングして新しいタスクを表示
+                        updateAllTasksCompletedMessage(); // 「全達成」メッセージを更新
                     }
                 });
 
                 let createButton = document.getElementById('createButton');
-                let newRow = document.getElementById('newRow');
-
-                if (createButton && newRow) {
+                if (createButton) {
                     createButton.onclick = function() {
-                        newRow.classList.remove('hidden');
-                        newRow.classList.add('editing');
-                        newRow.querySelector('.new-task-title-input').focus();
+                        // 既に新規作成用の編集行が存在しないか確認
+                        if (document.querySelector('.new-dynamic-row.editing')) {
+                            showCustomAlert('既に新規作成中のタスクがあります。完了またはキャンセルしてください。');
+                            return;
+                        }
+
+                        const tbody = document.querySelector('table tbody');
+                        const newRow = document.createElement('tr');
+                        newRow.classList.add('task-item', 'new-dynamic-row', 'editing');
+                        newRow.setAttribute('data-task-id', 'new-temp'); // 仮のID
+
+                        newRow.innerHTML = `
+                            <td class="edit-mode" colspan="5">
+                                <form>
+                                    <input type="text" name="title" placeholder="目標名を入力してください" class="edit-title-input">
+                                    <input type="time" name="dueDate" placeholder="予定時刻" class="edit-duedate-input">
+                                    <span>設定日: ー </span>
+                                    <span>連続日数: 0日 </span>
+                                    <button type="submit" class="edit-ok-button">OK</button>
+                                    <button type="button" class="edit-cancel-button">キャンセル</button>
+                                </form>
+                            </td>
+                        `;
+                        // 常に先頭に追加
+                        if (tbody.firstChild) {
+                            tbody.insertBefore(newRow, tbody.firstChild);
+                        } else {
+                            tbody.appendChild(newRow);
+                        }
+                        newRow.querySelector('.edit-title-input').focus();
+                        updateAllTasksCompletedMessage();
                     };
                 }
-
-                document.getElementById('newRowOkButton').onclick = function(event) {
-                    let inputTitle = document.getElementById('newRow').querySelector('.new-task-title-input');
-                    if (inputTitle.value.trim() === "") {
-                        alert("目標名を入力してください。");
-                        event.preventDefault();
-                    }
-                };
-
-                document.getElementById('newRowCancelButton').onclick = function() {
-                    newRow.classList.add('hidden');
-                    newRow.classList.remove('editing');
-                    newRow.querySelector('.new-task-title-input').value = '';
-                    newRow.querySelector('.new-task-duedate-input').value = '';
-                };
             };
         </script>
     </head>
@@ -76,12 +321,12 @@
         <div class="header-container">
             <h1>習慣ToDoリスト</h1>
             <div class="account-info">
-                <p>メールアドレス: <span th:text="${userEmail}"></span></p>
+                <p>メールアドレス: <span id="userEmailDisplay"></span></p>
             </div>
-            <a class="logout-button" th:href="@{/logout}">ログアウト</a>
+            <a class="logout-button" href="#">ログアウト</a>
         </div>
 
-        <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
+        <table>
             <thead>
                 <tr>
                     <th>目標名</th>
@@ -92,59 +337,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="task : ${tasks}" class="task-item" th:attr="data-task-id=${task.taskId}">
-
-                        <form th:action="@{/tasks/{taskId}/toggle(taskId=${task.taskId})}" method="post">
-                            <input type="checkbox" name="completed" th:checked="${#lists.contains(completedTaskIds, task.taskId)}">
-                        </form>
-                        <span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''" data-task-title></span>
-                    </td>
-                    <td class="display-mode">
-                        <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'HH:mm')}"></span>
-                        <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
-                    </td>
-                    <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
-                    <td class="display-mode"><span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></td>
-                    <td class="display-mode action-buttons">
-                        <button class="button-style edit-button">EDIT</button>
-
-                        <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
-                            <button type="submit" class="delete-button">削除</button>
-                        </form>
-                    </td>
-
-                    <td class="edit-mode" colspan="5">
-                        <form th:action="@{/tasks/{taskId}/update(taskId=${task.taskId})}" method="post">
-                            <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
-                            <input type="time" name="dueDate" th:value="${task.dueDate ? #temporals.format(task.dueDate, 'HH:mm') : ''}" placeholder="予定時刻" class="edit-duedate-input">
-                            <span>設定日: <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></span>
-                            <span>連続日数: <span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></span>
-                            <button type="submit" class="edit-ok-button">OK</button>
-                            <button type="button" class="edit-cancel-button">キャンセル</button>
-                        </form>
-                    </td>
-                </tr>
-
-                <tr id="newRow" class="new-row hidden">
-                    <td colspan="5">
-                        <form th:action="@{/tasks/create}" method="post">
-                            <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
-                            <input type="time" name="dueDate" placeholder="予定時刻" class="new-task-duedate-input">
-                            <span>設定日: ー </span>
-                            <span>連続日数: 0日 </span>
-                            <button type="submit" id="newRowOkButton">OK</button>
-                            <button type="button" id="newRowCancelButton">キャンセル</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
 
-        <p th:text="${'全タスク連続達成日数: ' + allTasksStreakCount + '日'}"></p>
-        <p th:if="${allTasksCompleted}" class="all-completed-message">今日のタスクを全て達成しました！</p>
+        <p id="allTasksStreakCountDisplay"></p>
+        <p id="allTasksCompletedMessage" class="all-completed-message" style="display: none;">今日のタスクを全て達成しました！</p>
 
         <div class="button-container">
             <button id="createButton">新規作成</button>
+        </div>
+
+        <div id="customModal" class="custom-modal-overlay">
+            <div class="custom-modal-content">
+                <p id="customModalMessage"></p>
+                <div class="custom-modal-buttons">
+                    <button id="customModalOk" class="custom-modal-ok"></button>
+                    <button id="customModalCancel" class="custom-modal-cancel"></button>
+                </div>
+            </div>
         </div>
     </body>
 </html>
