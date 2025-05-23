@@ -35,6 +35,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // TODO: ログイン機能まで動くようになったら↓の行と45行目をアンコメントして認証を有効化する。
+                // .requestMatchers("/api/auth/register", "/api/auth/login", "/register", "/css/**", "/js/**").permitAll()
                 .anyRequest().permitAll() //すべてのリクエストを許可
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
