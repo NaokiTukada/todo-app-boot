@@ -38,8 +38,18 @@ public class TaskService {
     public Optional<Task> updateTask(Long id, Task updateTask) {
         Optional<Task> existenceTask = taskRepository.findById(id);
         if (existenceTask.isPresent()) {
-            updateTask.setTaskId(id);
-            return Optional.of(taskRepository.save(updateTask));
+            Task existing = existenceTask.get();
+
+            // titleが変更されていたらcreatedAtも更新
+            if (!existing.getTitle().equals(updateTask.getTitle())) {
+                existing.setTitle(updateTask.getTitle());
+                existing.setCreatedAt(LocalDateTime.now());
+            }
+
+            // dueDateは常に更新（変更の有無にかかわらず）
+            existing.setDueDate(updateTask.getDueDate());
+
+            return Optional.of(taskRepository.save(existing));
         }
         return Optional.empty();
     }
