@@ -77,7 +77,7 @@
             });
 
             // 「新規作成」ボタンの処理
-            var createButton = document.getElementById('createButton');
+            var createButton = document.getElementById('create-button');
             var newRow = document.getElementById('newRow');
 
             if (createButton && newRow) {
@@ -143,7 +143,7 @@
                     <span th:unless="${task.dueDate}"> ー </span>
                 </td>
                 <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
-                <td class="display-mode"><span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></td>
+                <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak+ '日' : '0日'}"></span></td>
                 <td class="display-mode action-buttons">
                     <button class="edit-button">編集</button>
                     <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
@@ -156,7 +156,7 @@
                         <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
                         <input type="time" name="dueDate" th:value="${task.dueDate ? #temporals.format(task.dueDate, 'HH:mm') : ''}" placeholder="予定時刻" class="edit-duedate-input">
                         <span>設定日: <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></span>
-                        <span>連続日数: <span th:text="${task.streakCount != null ? task.streakCount + '日' : '0日'}"></span></span>
+                        <span>連続日数: <span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></span>
                         <button type="submit" class="edit-ok-button">OK</button>
                         <button type="button" class="edit-cancel-button">キャンセル</button>
                     </form>
