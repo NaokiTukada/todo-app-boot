@@ -2,11 +2,12 @@ package com.example.todoapp.repository;
 
 
 import com.example.todoapp.domain.Task;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.example.todoapp.domain.User;
 
-@Repository
-public interface TaskRepository extends JpaRepository<Task, Long> {
-    
-}
-//コミットするためにコメントを足してます。
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TaskRepository extends JpaRepository<Task, Long>{
+    List<Task> findByUser(User user);
+}   

@@ -1,124 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>習慣ToDoリスト</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="style.css">
-    
-    <script th:inline="javascript">
-        window.onload = function() {
-            var message = "";
-            if (message) {
-                alert(message);
-            }
-
-            // ページ読み込み時に、目標名が空でないかチェックする関数
-            function validateTaskTitles() {
-                var taskTitles = document.querySelectorAll('span[data-task-title]');
-                var hasEmptyTitle = false;
-
-                taskTitles.forEach(function(titleElement) {
-                    if (titleElement.textContent.trim() === "") {
-                        hasEmptyTitle = true;
-                    }
-                });
-
-                if (hasEmptyTitle) {
-                    alert("目標名が空のタスクがあります。設定してください。");
-                }
-            }
-            validateTaskTitles();
-
-            // リセットボタンの処理
-            var resetButton = document.getElementById('resetButton');
-            if (resetButton) {
-                resetButton.onclick = function() {
-                    var confirmation = confirm("日付変更処理を実行します。よろしいですか？");
-                    if (confirmation) {
-                        alert("リセットしました"); // サーバーからのレスポンスを待つべきですが、ここでは簡略化
-                    }
-                    return confirmation;
-                };
-            }
-
-            // イベント委譲を使って、テーブル内のクリックイベントを処理
-            document.querySelector('table').addEventListener('click', function(event) {
-                var target = event.target;
-                var row = target.closest('tr');
-
-                // チェックボックスの処理
-                if (target.type === 'checkbox') {
-                    // onchangeでform.submit()が呼ばれるので、ここでは特別な処理は不要
-                    // ただし、もしform.submit()をJS側で制御したい場合はここに記述
-                }
-                // 編集ボタンの処理
-                else if (target.classList.contains('edit-button')) {
-                    if (row) {
-                        row.classList.add('editing');
-                    }
-                }
-                // 編集時のOKボタンの処理
-                else if (target.classList.contains('edit-ok-button')) {
-                    var inputTitle = row.querySelector('.edit-title-input');
-                    if (inputTitle.value.trim() === "") {
-                        alert("目標名を入力してください。");
-                        event.preventDefault(); // フォーム送信を阻止
-                    } else {
-                        // フォームは自動で送信されるため、ここでは特別なJavaScriptは不要
-                        // サーバーサイドでの処理後、ページがリロードされる
-                    }
-                }
-                // 編集時のキャンセルボタンの処理
-                else if (target.classList.contains('edit-cancel-button')) {
-                    if (row) {
-                        row.classList.remove('editing');
-                    }
-                }
-            });
-
-            // 「新規作成」ボタンの処理
-            var createButton = document.getElementById('create-button');
-            var newRow = document.getElementById('newRow');
-
-            if (createButton && newRow) {
-                createButton.onclick = function() {
-                    newRow.classList.remove('hidden'); // 新規作成行を表示
-                    newRow.classList.add('editing'); // 編集状態にする
-                    newRow.querySelector('.new-task-title-input').focus(); // 入力フィールドにフォーカス
-                };
-            }
-
-            // 新規作成行のOKボタンの処理
-            document.getElementById('newRowOkButton').onclick = function(event) {
-                var inputTitle = document.getElementById('newRow').querySelector('.new-task-title-input');
-                if (inputTitle.value.trim() === "") {
-                    alert("目標名を入力してください。");
-                    event.preventDefault(); // フォーム送信を阻止
-                } else {
-                    // フォームは自動で送信されるため、ここでは特別なJavaScriptは不要
-                    // サーバーサイドでの処理後、ページがリロードされる
-                }
-            };
-
-            // 新規作成行のキャンセルボタンの処理
-            document.getElementById('newRowCancelButton').onclick = function() {
-                newRow.classList.add('hidden'); // 新規作成行を非表示
-                newRow.classList.remove('editing'); // 編集状態を解除
-                // 入力内容をリセット
-                newRow.querySelector('.new-task-title-input').value = '';
-                newRow.querySelector('.new-task-duedate-input').value = '';
-            };
-        };
-    </script>
-</head>
-<body>
-    <div class="header-container">
-        <h1>習慣ToDoリスト</h1>
-        <div class="account-info">
-            <p>メールアドレス: <span th:text="${userEmail}"></span></p>
+    <head>
+        <title>習慣ToDoリスト</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <script th:src="@{/js/task_create.js}" difer></script>
+    </head>
+    <body>
+        <div class="header-container">
+            <h1>習慣ToDoリスト</h1>
+            <div class="account-info">
+                <p>メールアドレス: <span th:text="${userEmail}"></span></p>
+            </div>
+            <a class="logout-button" th:href="@{/logout}">ログアウト</a>
         </div>
-        <a class="logout-button" th:href="@{/logout}">ログアウト</a>
-    </div>
 
     <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
         <thead>
@@ -163,29 +58,26 @@
                 </td>
             </tr>
 
-            <tr id="newRow" class="new-row hidden">
-                <td colspan="5">
-                    <form th:action="@{/tasks/create}" method="post">
-                        <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
-                        <input type="time" name="dueDate" placeholder="予定時刻" class="new-task-duedate-input">
-                        <span>設定日: ー </span>
-                        <span>連続日数: 0日 </span>
-                        <button type="submit" id="newRowOkButton">OK</button>
-                        <button type="button" id="newRowCancelButton">キャンセル</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                <tr id="newRow" class="new-row hidden">
+                    <td colspan="5">
+                        <form th:action="@{/tasks/create}" method="post">
+                            <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
+                            <input type="time" name="dueDate" placeholder="予定時刻" class="new-task-duedate-input">
+                            <span>設定日: ー </span>
+                            <span>連続日数: 0日 </span>
+                            <button type="submit" id="newRowOkButton">OK</button>
+                            <button type="button" id="newRowCancelButton">キャンセル</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <p th:text="${'全タスク連続達成日数: ' + allTasksStreakCount + '日'}"></p>
-    <p th:if="${allTasksCompleted}" class="all-completed-message">今日のタスクを全て達成しました！</p>
+        <p th:text="${'全タスク連続達成日数: ' + allTasksStreakCount + '日'}"></p>
+        <p th:if="${allTasksCompleted}" class="all-completed-message">今日のタスクを全て達成しました！</p>
 
-    <div class="button-container">
-        <button id="createButton">新規作成</button>
-        <form th:if="${showResetButton}" th:action="@{/tasks/reset-and-count}" method="post">
-            <button type="submit" id="resetButton">日付変更処理</button>
-        </form>
-    </div>
-</body>
+        <div class="button-container">
+            <button id="createButton">新規作成</button>
+        </div>
+    </body>
 </html>
