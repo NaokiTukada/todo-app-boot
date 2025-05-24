@@ -37,7 +37,7 @@ public class Task {
     @Column(name = "last_streak_updated")
     private LocalDate lastStreakUpdated;
 
-    @Column(name = "due_date", nullable = true) 
+    @Column(name = "due_date",nullable = true)
     private LocalDateTime dueDate;
 
     @PrePersist

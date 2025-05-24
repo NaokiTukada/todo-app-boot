@@ -34,14 +34,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        // ユーザー認証周りの機能が未実装だが目標一覧表画面の動作を確認したいため、/tasksを入れた
-                        // TODO: ログインまでできるようになったら/tasksはここから消す
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/tasks").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            .authorizeHttpRequests(auth -> auth
+                // TODO: ログイン機能まで動くようになったら↓の行と45行目をアンコメントして認証を有効化する。
+                // .requestMatchers("/api/auth/register", "/api/auth/login", "/register", "/css/**", "/js/**").permitAll()
+                .anyRequest().permitAll() //すべてのリクエストを許可
+            )
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        // 🔴 フィルターはコメントアウト or 削除（開発時のみ）
+        // http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
