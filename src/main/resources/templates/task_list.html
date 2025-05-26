@@ -113,7 +113,7 @@
                     <td class="display-mode action-buttons">
                         <button class="edit-button">編集</button>
                         <form th:action="@{/tasks/{taskId}(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
-                            <button type="submit" class="delete-button">削除</button>
+                            <button th:onclick="'deleteTask(' + ${task.taskId} + ')'" class="delete-button">削除</button>
                         </form>
                     </form>
                     </td>
