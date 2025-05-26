@@ -31,8 +31,6 @@
     </div>
 
     <script>
-        // JavaScriptの開始
-
         // 各HTML要素を取得
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
@@ -64,12 +62,11 @@
 
             // メールアドレス、パスワードがともに記載されているかチェック
             // 記載されていない場合は、認証処理には進まず、バックエンドからのエラーを待つ
-            // （画面仕様書に記載のないクライアントサイドメッセージは表示しないため）
+
             if (!email || !password) {
                 // 認証処理へ進まないが、エラーメッセージはバックエンドからの応答に依存
                 // ここで何も表示しないことで、仕様書に準拠
                 // 例えば、バックエンドが空欄で401を返すなら、そのメッセージが表示される
-                // もし、ここで何かメッセージを出したい場合は、仕様書にそのメッセージを追加する必要がある
             }
 
             // バックエンドへ送信するデータ
@@ -96,8 +93,8 @@
                     // JWTをローカルストレージに保存
                     localStorage.setItem('jwt_token', jwtToken);
 
-                    // ログイン成功後、目標一覧表画面へリダイレクト（仕様書にメッセージ表示の記載なし）
-                    window.location.href = '/todos.html'; // 実際の目標一覧表画面のパスに修正してください
+                    // ログイン成功後、目標一覧表画面へリダイレクト
+                    window.location.href = '/task_list.html'; // 実際の目標一覧表画面のパスに修正
                 } else {
                     // エラーレスポンスの場合
                     const errorText = await response.text(); // エラーメッセージをテキストとして取得
@@ -120,7 +117,7 @@
                         }
                     }
 
-                    // 画面仕様書に記載のエラーメッセージを優先
+                    // エラーメッセージを優先
                     if (response.status === 401) { // Unauthorized (認証失敗)
                         showErrorMessage('メールアドレス、パスワードが誤っている可能性があります');
                     } else {
@@ -137,10 +134,8 @@
         // 「新規登録はこちらから」リンクがクリックされた時の処理
         registerLink.addEventListener('click', function(event) {
             event.preventDefault(); // デフォルトのリンク遷移を停止
-            window.location.href = '/register'; // 新規登録画面のパスに修正してください (Spring Bootの@RequestMappingに合わせる)
+            window.location.href = '/register'; 
         });
-
-        // JavaScriptの終了
     </script>
 </body>
 </html>
