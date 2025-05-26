@@ -91,7 +91,7 @@
                     const jwtToken = data.token;
 
                     // JWTをローカルストレージに保存
-                    localStorage.setItem('jwt_token', jwtToken);
+                    localStorage.setItem('jwtToken', jwtToken);
 
                     // ログイン成功後、目標一覧表画面へリダイレクト
                     window.location.href = '/task_list.html'; // 実際の目標一覧表画面のパスに修正
