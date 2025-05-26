@@ -48,29 +48,30 @@ public class TaskController {
         return "task_list";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Optional<Task> taskOpt = taskService.getTaskById(id);
+    @GetMapping("/{taskId}")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long taskId) {
+        Optional<Task> taskOpt = taskService.getTaskById(taskId);
         return taskOpt.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
-        return taskService.updateTask(id, updatedTask)
+    @PutMapping("/{taskId}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @RequestBody Task updatedTask) {
+        return taskService.updateTask(taskId, updatedTask)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+    @PostMapping("/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
+        taskService.deleteTask(taskId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/toggle")
-    public ResponseEntity<Void> toggleTaskCompletion(@PathVariable Long id) {
-        taskService.toggleTaskCompletion(id);
+
+    @PutMapping("/{taskId}/toggle")
+    public ResponseEntity<Void> toggleTaskCompletion(@PathVariable Long taskId) {
+        taskService.toggleTaskCompletion(taskId);
         return ResponseEntity.ok().build();
     }
 
