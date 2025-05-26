@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" th:href="@{css/style.css}">
         <script th:src="@{/js/edit-task.js}"></script>
+        <script th:src="@{/js/logout.js}"></script>
     </head>
     <body>
         <div class="header-container">
@@ -12,7 +13,7 @@
             <div class="account-info">
                 <p>メールアドレス: <span th:text="${userEmail}"></span></p>
             </div>
-            <a class="logout-button" th:href="@{/logout}">ログアウト</a>
+            <button class="logout-button" onclick="logout()">ログアウト</button>
         </div>
 
         <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
