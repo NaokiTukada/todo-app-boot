@@ -2,6 +2,7 @@ package com.example.todoapp.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -38,7 +39,7 @@ public class Task {
     private LocalDate lastStreakUpdated;
 
     @Column(name = "due_date",nullable = true)
-    private LocalDateTime dueDate;
+    private LocalTime dueDate;
 
     @PrePersist
     public void prePersist() {
