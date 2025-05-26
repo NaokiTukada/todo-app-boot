@@ -1,15 +1,14 @@
-# ### タスクを追加
-# POST http://localhost:8080/api/tasks
-# Content-Type: application/json
+### タスクを追加
+POST http://localhost:8080/tasks
+Content-Type: application/json
 
-# {
-#     ""
-#     "title": "updateTask test",
-#     "dueDate": "2025-06-01T23:59:00",   
-#     "user": {
-#         "userId": 1
-#     }
-# }
+{
+    "title": "updateTask test",
+    "dueDate": "2025-06-01T23:59:00",   
+    "user": {
+        "userId": 1
+    }
+}
 
 ### タスク取得
 GET http://localhost:8080/tasks/1
