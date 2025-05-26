@@ -25,7 +25,8 @@
             <label for="confirm" class="label confirm-label">確認用</label>
             <input type="password" id="confirm" class="input confirm-input" />
 
-            <p class="error-message" id="errorMessage">エラーメッセージ</p>
+            <!--<p class="error-message" id="errorMessage">エラーメッセージ</p>-->
+            <div class="error-container" id="errorMessage"></div>
 
             <div class="button-wrapper">
             <button type="button" class="button back-button" id="backButton">戻る</button>
@@ -47,9 +48,22 @@
 
         // エラーメッセージを表示する関数 (複数のメッセージに対応)
         function showErrorMessages(messages) {
+            errorMessageElement.innerHTML = '';
+            messages.forEach(message => {
+                const line = document.createElement('div');
+                line.className = 'error-line';
+                line.textContent = message;
+                errorMessageElement.appendChild(line);
+            });
+            errorMessageElement.style.display = 'block';
+}
+
+        /*
+        function showErrorMessages(messages) {
             errorMessageElement.innerHTML = messages.join('<br>'); // 配列のメッセージを改行で結合して表示
             errorMessageElement.style.display = 'block';
         }
+        */
 
         // エラーメッセージを非表示にする関数
         function hideErrorMessage() {

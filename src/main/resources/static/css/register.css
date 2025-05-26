@@ -8,6 +8,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
 }
 
 .container {
@@ -26,7 +27,7 @@ body {
     height: 77px;
     left: 117px;
     top: 105px;
-    font-family: 'Inter'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 64px;
@@ -44,7 +45,7 @@ body {
     height: 165px;
     left: 527px;
     top: 260px;
-    font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif;/* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 64px;
@@ -61,7 +62,7 @@ body {
 .label {
     position: absolute;
     height: 58px;
-    font-family: 'Inter'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 48px;
@@ -94,7 +95,7 @@ body {
     height: 58px;
     left: 248px;
     top: 676px;
-    font-family: 'Inter'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 48px;
@@ -120,6 +121,7 @@ body {
     border: 3px solid #000000;
     padding: 0 15px;
     font-size: 24px;
+    font-family: 'Inter', sans-serif;
 }
 
 /* メールアドレス入力フィールドの個別配置 */
@@ -144,7 +146,7 @@ body {
     height: 90px;
     left: 485px;
     top: 560px;
-    font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 29px;
@@ -159,23 +161,27 @@ body {
 /* エラーメッセージ (初期状態では非表示) */
 .error-message {
     position: absolute;
-    width: 624px;
-    height: 77px;
+    max-width: 600px; /* 必要に応じて調整 */
+    padding: 10px 20px;
     left: 485px;
     top: 742px;
-    font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 30px;
-    line-height: 77px;
+    font-size: 28px;
+    line-height: 1.6;
     color: #FF0000;
-    border: 1px solid #FF0707;
+    display: none; /* JSで制御予定 */
+    
+    /* 改行が不自然に起きないように */
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     text-align: center;
-    display: none; /* JavaScriptがないため、常に非表示 */
+    white-space: normal;  /* 改行許可 */
+    word-break: break-word; /* 単語途中での改行も許可 */
 }
+
 
 /* ボタンの共通スタイル */
 .button {
@@ -185,7 +191,7 @@ body {
     height: 50px;
     background: #D9D9D9;
     border: 3px solid #000000;
-    font-family: 'Inter'; /* ユーザー指定フォント */
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
@@ -217,4 +223,28 @@ body {
 /* ボタンのホバーエフェクト(ユーザーがマウスカーソルをボタンの上に乗せたときに発生する視覚的な変化) */
 .button:hover {
     background-color: #bfbfbf;
+}
+
+/* 複数エラーメッセージ用スタイル */
+.error-container {
+    position: absolute;
+    top: 742px;         /* 元の指定と合わせる */
+    left: 485px;
+    padding: 20px;
+    background-color: #fff;
+    color: #FF0000;
+    font-family: 'Inter', sans-serif;
+    font-size: 19px;
+    line-height: 1.8;
+    display: none;
+    max-width: 600px;
+    text-align: center;
+}
+
+.error-container .error-line {
+    margin-bottom: 10px;
+}
+
+.error-container .error-line:last-child {
+    margin-bottom: 0;
 }
