@@ -31,8 +31,8 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsService;
-
+    private final UserDetailsServiceImpl userDetailsService; 
+      
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest) {
 

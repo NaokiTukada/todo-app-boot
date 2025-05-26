@@ -37,6 +37,9 @@ public class Task {
     @Column(name = "last_streak_updated")
     private LocalDate lastStreakUpdated;
 
+    @Column(name = "due_date",nullable = true)
+    private LocalDateTime dueDate;
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

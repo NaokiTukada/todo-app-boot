@@ -35,12 +35,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                .anyRequest().authenticated()
+                // TODO: ログイン機能まで動くようになったら↓の行と45行目をアンコメントして認証を有効化する。
+                // .requestMatchers("/api/auth/register", "/api/auth/login", "/register", "/css/**", "/js/**").permitAll()
+                .anyRequest().permitAll() //すべてのリクエストを許可
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        // 🔴 フィルターはコメントアウト or 削除（開発時のみ）
+        // http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

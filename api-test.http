@@ -1,0 +1,42 @@
+# ### タスクを追加
+# POST http://localhost:8080/api/tasks
+# Content-Type: application/json
+
+# {
+#     ""
+#     "title": "updateTask test",
+#     "dueDate": "2025-06-01T23:59:00",   
+#     "user": {
+#         "userId": 1
+#     }
+# }
+
+### タスク取得
+GET http://localhost:8080/tasks/1
+
+
+### タスク更新（title変更 → createdAtも更新されることを確認）
+PUT http://localhost:8080/tasks/1
+Content-Type: application/json
+
+{
+  "taskId": 1,
+  "title": "新しいタイトル",
+  "dueDate": "2025-06-01T23:59:00",
+  "user": {
+    "userId": 1
+  }
+}
+
+### タイトル変更なし（createdAtは変更されないはず）
+PUT http://localhost:8080/tasks/1
+Content-Type: application/json
+
+{
+  "taskId": 1,
+  "title": "元のタイトル",
+  "dueDate": "2025-06-05T23:59:00",
+  "user": {
+    "userId": 1
+  }
+}
