@@ -4,7 +4,7 @@
         <title>習慣ToDoリスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" th:href="@{css/style.css}">
-
+        <script th:src="@{js/deleteTask.js}"></script>
         <script th:inline="javascript">
             window.onload = function() {
                 function validateTaskTitles() {
@@ -112,7 +112,7 @@
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
                     <td class="display-mode action-buttons">
                         <button class="edit-button">編集</button>
-                        <form th:action="@{/tasks/{taskId}(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
+                        <form th:action="@{/tasks/{taskId}(taskId=${task.taskId})}" method="post" >
                             <button th:onclick="'deleteTask(' + ${task.taskId} + ')'" class="delete-button">削除</button>
                         </form>
                     </form>
