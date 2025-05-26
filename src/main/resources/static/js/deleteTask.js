@@ -1,10 +1,10 @@
 function deleteTask(taskId) {
-    if (!confirm("本当に削除しますか？")) return;
+    if (!confirm("この目標を削除しますか？")) return;
 
     fetch(`/tasks/${taskId}`, { 
-        method: 'POST',  // ここはPOSTのままで進める
+        method: 'POST',  // 削除はPOSTで進める
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${jwtToken}`,
             'Content-Type': 'application/json'
         }
     })
