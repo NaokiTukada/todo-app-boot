@@ -1,0 +1,250 @@
+/* 新規登録画面のCSS */
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    box-sizing: border-box;
+    position: relative;
+    width: 1440px;
+    height: 1024px;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+}
+
+/* アプリケーションタイトル (習慣Todoリスト) */
+.app-title {
+    position: absolute;
+    width: 473px;
+    height: 77px;
+    left: 117px;
+    top: 105px;
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 77px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+}
+
+/* ページサブタイトル (新規登録) */
+.page-subtitle {
+    box-sizing: border-box;
+    position: absolute;
+    width: 385px;
+    height: 165px;
+    left: 527px;
+    top: 260px;
+    font-family: 'Inter', sans-serif;/* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 165px;
+    color: #000000;
+    /* 黒い枠線を削除 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 入力フィールドラベルの共通スタイル */
+.label {
+    position: absolute;
+    height: 58px;
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 58px;
+    color: #000000;
+    text-decoration-line: underline;
+    display: flex;
+    align-items: center;
+    text-align: justify;
+}
+
+/* メールアドレスラベルの個別配置 */
+.email-label {
+    width: 336px;
+    left: 85px;
+    top: 458px;
+}
+
+/* パスワードラベルの個別配置 */
+.password-label {
+    width: 240px;
+    left: 181px;
+    top: 556px;
+}
+
+/* 確認用パスワードラベルの個別配置 */
+.confirm-label {
+    position: absolute;
+    width: 173px;
+    height: 58px;
+    left: 248px;
+    top: 676px;
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 58px;
+    text-align: center;
+    letter-spacing: 0.3em;
+    text-decoration-line: underline;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* テキストが改行されないように */
+}
+
+/* 入力フィールドの共通スタイル */
+.input {
+    box-sizing: border-box;
+    position: absolute;
+    width: 450px;
+    height: 50px;
+    left: 495px;
+    background: #D9D9D9;
+    border: 3px solid #000000;
+    padding: 0 15px;
+    font-size: 24px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* メールアドレス入力フィールドの個別配置 */
+.email-input {
+    top: 462px;
+}
+
+/* パスワード入力フィールドの個別配置 */
+.password-input {
+    top: 560px;
+}
+
+/* 確認用入力フィールドの個別配置 */
+.confirm-input {
+    top: 684px;
+}
+
+/* パスワードの注意書き */
+.password-note {
+    position: absolute;
+    width: 624px;
+    height: 90px;
+    left: 485px;
+    top: 560px;
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 29px;
+    line-height: 36px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* エラーメッセージ (初期状態では非表示) */
+.error-message {
+    position: absolute;
+    max-width: 600px; /* 必要に応じて調整 */
+    padding: 10px 20px;
+    left: 485px;
+    top: 742px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.6;
+    color: #FF0000;
+    display: none; /* JSで制御予定 */
+    
+    /* 改行が不自然に起きないように */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    white-space: normal;  /* 改行許可 */
+    word-break: break-word; /* 単語途中での改行も許可 */
+}
+
+
+/* ボタンの共通スタイル */
+.button {
+    box-sizing: border-box;
+    position: absolute;
+    width: 160px;
+    height: 50px;
+    background: #D9D9D9;
+    border: 3px solid #000000;
+    font-family: 'Inter', sans-serif; /* ユーザー指定フォント */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px; /* テキストが横方向に収まるように行の高さを調整 */
+    color: #000000;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* ボタン内のテキストが改行されないように */
+}
+
+/* 戻るボタンの個別配置とパディング(内側の余白) */
+.back-button {
+    left: 964px;
+    top: 831px;
+    padding: 24px 44px;
+}
+
+/* 完了ボタンの個別配置とパディング(内側の余白) */
+.complete-button {
+    left: 1196px;
+    top: 831px;
+    padding: 24px 44px;
+}
+
+/* ボタンのホバーエフェクト(ユーザーがマウスカーソルをボタンの上に乗せたときに発生する視覚的な変化) */
+.button:hover {
+    background-color: #bfbfbf;
+}
+
+/* 複数エラーメッセージ用スタイル */
+.error-container {
+    position: absolute;
+    top: 742px;         /* 元の指定と合わせる */
+    left: 485px;
+    padding: 20px;
+    background-color: #fff;
+    color: #FF0000;
+    font-family: 'Inter', sans-serif;
+    font-size: 19px;
+    line-height: 1.8;
+    display: none;
+    max-width: 600px;
+    text-align: center;
+}
+
+.error-container .error-line {
+    margin-bottom: 10px;
+}
+
+.error-container .error-line:last-child {
+    margin-bottom: 0;
+}
