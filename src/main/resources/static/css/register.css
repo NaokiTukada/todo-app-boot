@@ -159,9 +159,9 @@ body {
 /* エラーメッセージ (初期状態では非表示) */
 .error-message {
     position: absolute;
-    width: 239px;
+    width: 624px;
     height: 77px;
-    left: 600px;
+    left: 485px;
     top: 742px;
     font-family: 'Inknut Antiqua'; /* ユーザー指定フォント */
     font-style: normal;

@@ -7,14 +7,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録 - 習慣Todoリスト</title>
-    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
     <div class="container">
         <h1 class="app-title">習慣Todoリスト</h1>
         <h2 class="page-subtitle">新規登録</h2>
 
-        <form class="registration-form">
+        <form id="registrationForm" class="registrationForm">
             <label for="email" class="label email-label">メールアドレス</label>
             <input type="email" id="email" class="input email-input" />
 
@@ -25,11 +25,12 @@
             <label for="confirm" class="label confirm-label">確認用</label>
             <input type="password" id="confirm" class="input confirm-input" />
 
-            <p class="error-message">エラーメッセージ</p>
+            <p class="error-message" id="errorMessage">エラーメッセージ</p>
 
             <div class="button-wrapper">
-                <button type="button" class="button back-button">戻る</button>
-                <button type="button" class="button complete-button">完了</button>
+            <button type="button" class="button back-button" id="backButton">戻る</button>
+            <button type="submit" class="button complete-button" id="completeButton">完了</button>
+
             </div>
         </form>
     </div>
