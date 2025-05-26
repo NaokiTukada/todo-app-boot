@@ -6,25 +6,10 @@
         <link rel="stylesheet" href="style.css">
 
         <script th:inline="javascript">
-
-        function logout() {
-            localStorage.removeItem("jwt_token");  // JWTを削除
-            window.location.href = "/login";   // ログイン画面に戻す
-        }
-
-        window.onload = function() {
-        // ... 既存のwindow.onload内のコード ...
-        };
-        </script>
-
-
-
-
-
-
-
-
-
+            function logout() {
+                localStorage.removeItem("jwtToken");
+                window.location.href = "/login"; 
+            }
 
             window.onload = function() {
                 function validateTaskTitles() {
