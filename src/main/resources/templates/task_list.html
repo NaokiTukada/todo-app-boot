@@ -5,8 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" th:href="@{css/style.css}">
         <script th:src="@{/js/task_create.js}"defer></script>
-        <script th:src="@{/js/edit-task.js}" defer></script>
-        <script th:src="@{/js/taskToggle.js}"defer></script>
+        <script th:src="@{/js/edit-task.js}"defer></script>
+        <script th:src="@{/js/logout.js}"defer></script>
+        <script th:src="@{/js/deleteTask.js}"defer></script>
+        <script th:src="@{/js/task-toggle.js}"defer></script>
     </head>
     <body>
         <div class="header-container">
@@ -14,7 +16,7 @@
             <div class="account-info">
                 <p>メールアドレス: <span th:text="${userEmail}"></span></p>
             </div>
-            <a class="logout-button" th:href="@{/logout}">ログアウト</a>
+            <button class="logout-button" onclick="logout()">ログアウト</button>
         </div>
 
         <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
@@ -39,16 +41,16 @@
                         <span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''" data-task-title></span>
                     </td>
                     <td class="display-mode">
-                        <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'HH:mm')}"></span>
+                        <span th:text="${task.dueDate} ?: '未設定'">2025-05-24</span>
                         <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
                     </td>
                     <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
                     <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
-                        <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
-                            <button type="submit" class="delete-button">削除</button>
-                        </form>
+                        <button type="button" th:onclick="|deleteTask(${task.taskId}, event)|" class="delete-button">
+                            削除
+                        </button>
                     </td>
 
                     <input type="hidden" id="userId" value="1">
