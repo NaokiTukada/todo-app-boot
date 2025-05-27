@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td class="display-mode">
                         <span>0日</span>
                     </td>
-                    <td class="display-mode action-buttons">
+                    <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
                         <form action="/tasks/${createdTask.taskId}/delete" method="post" onsubmit="return confirm('この目標を削除しますか？');">
                             <button type="submit" class="delete-button">削除</button>
