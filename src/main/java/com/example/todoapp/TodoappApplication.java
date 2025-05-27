@@ -13,6 +13,11 @@ public class TodoappApplication {
 		return "register";
 	}
 
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(TodoappApplication.class, args);
 	}
