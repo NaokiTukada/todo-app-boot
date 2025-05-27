@@ -12,6 +12,7 @@ import com.example.todoapp.domain.Task;
 import com.example.todoapp.domain.User;
 import com.example.todoapp.repository.UserRepository;
 import com.example.todoapp.service.TaskService;
+import com.example.todoapp.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
@@ -74,5 +76,12 @@ public class TaskController {
         taskService.toggleTaskCompletion(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/user/{userId}/updateStreak")
+    public ResponseEntity<Void> updateUserTasks(@PathVariable Long userId) {
+        taskService.whenDateChange(userId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
