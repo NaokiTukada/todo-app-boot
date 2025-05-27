@@ -1,7 +1,17 @@
+  ### タスクを追加
+  POST http://localhost:8080/tasks
+  Content-Type: application/json
 # ### タスクを追加
 POST http://localhost:8080/tasks
 Content-Type: application/json  
 
+  {
+      "title": "updateTask test",
+      "dueDate": "23:59",   
+      "user": {
+          "userId": 1
+      }
+  }
 {
     "title": "deleteTask test",
     "dueDate": "2025-06-01T23:59:00",
@@ -38,6 +48,16 @@ Content-Type: application/json
   "user": {
     "userId": 1
   }
+}
+
+### ユーザー登録 (userId は自動生成)
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "securepassword",
+  "confirmPassword": "securepassword"
 }
 
 ### タスクの削除

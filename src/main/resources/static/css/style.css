@@ -97,11 +97,28 @@ tbody tr:nth-child(odd) {
     display: none;
 }
 
+/* 親のtrがeditingクラスを持つとき、その中の.edit-mode tdを表示する */
 .editing .edit-mode {
-    display: table-row;
-    /*display: flex;
-     flex-direction: row;
-    gap: 5px;*/
+    display: table-cell; /* tdなのでtable-cellが適切 */
+}
+
+/* edit-modeの中にあるフォーム要素の表示を調整 */
+.editing .edit-mode form {
+    display: flex; /* Flexboxを使って要素を横並びにする */
+    align-items: center;
+    gap: 5px; /* 要素間の隙間 */
+    width: 100%; /* tdいっぱいに広げる */
+}
+
+/* edit-mode内のinput要素の幅を調整 */
+.editing .edit-mode input {
+    width: auto; /* 必要に応じて調整 */
+    flex-grow: 1; /* スペースがあれば広がる */
+}
+
+/* edit-mode内のspan要素の表示を調整 */
+.editing .edit-mode span {
+    white-space: nowrap; /* テキストの折り返しを防ぐ */
 }
 .editing .edit-mode input{
     width: auto;
@@ -145,7 +162,7 @@ tbody tr:nth-child(odd) {
 .new-task-title-input, .new-task-duedate-input {
     padding: 8px;
     margin-right: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd;     
     border-radius: 5px;
     font-size: 12px;
     width: auto;
