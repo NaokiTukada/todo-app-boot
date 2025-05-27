@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>習慣ToDoリスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" th:href="@{css/style.css}">
-        <script th:src="@{/js/edit-task.js}"></script>
-        <script th:src="@{/js/logout.js}"></script>
+        <script th:src="@{/js/task_create.js}"defer></script>
+        <script th:src="@{/js/edit-task.js}"defer></script>
+        <script th:src="@{/js/logout.js}"defer></script>
     </head>
     <body>
         <div class="header-container">
@@ -47,6 +48,7 @@
                         </form>
                     </td>
 
+                    <input type="hidden" id="userId" value="1">
                     <td class="edit-mode" colspan="5">
                     <form th:action="@{/tasks/{id}(id=${task.taskId})}" method="post">
                         <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
@@ -67,6 +69,7 @@
                 <tr id="newRow" class="new-row hidden">
                     <td colspan="5">
                         <form th:action="@{/tasks/create}" method="post">
+                            <input type="hidden" name="userId" th:value="${userId}">
                             <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
                             <input type="time" name="dueDate" placeholder="予定時刻" class="new-task-duedate-input">
                             <span>設定日: ー </span>
