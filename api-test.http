@@ -39,3 +39,11 @@ Content-Type: application/json
     "userId": 1
   }
 }
+
+### タスク完了状態の切り替え
+PUT http://localhost:8080/tasks/1/toggle
+Content-Type: application/
+
+### ユーザーのタスクステータスを更新
+POST http://localhost:8080/tasks/user/1/updateStreak
+Content-Type: application/json
