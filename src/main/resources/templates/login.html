@@ -130,12 +130,6 @@
                 showErrorMessage('ログイン処理中にエラーが発生しました'); // ネットワークエラーメッセージ
             }
         });
-
-        // 「新規登録はこちらから」リンクがクリックされた時の処理
-        registerLink.addEventListener('click', function(event) {
-            event.preventDefault(); // デフォルトのリンク遷移を停止
-            window.location.href = '/register'; 
-        });
     </script>
 </body>
 </html>
