@@ -36,14 +36,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 
-                .requestMatchers("/api/auth/register", "/api/auth/login", 
-                                "/register", "/css/register.css", "/js/register.js",
-                                "/login","/css/login.css", "/js/login.js",
-                                "/tasks", "/css/style.css", "/js/task_create.js", "/js/edit-task.js", "/js/logout.js"
-                                ).permitAll()
+                .requestMatchers("/api/auth/register", "/api/auth/login", "/register", "/login", "/css/**", "/js/**").permitAll()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        
+
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
