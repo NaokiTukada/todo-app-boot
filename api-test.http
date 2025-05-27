@@ -1,6 +1,9 @@
   ### タスクを追加
   POST http://localhost:8080/tasks
   Content-Type: application/json
+# ### タスクを追加
+POST http://localhost:8080/tasks
+Content-Type: application/json  
 
   {
       "title": "updateTask test",
@@ -9,8 +12,16 @@
           "userId": 1
       }
   }
+{
+    "title": "deleteTask test",
+    "dueDate": "2025-06-01T23:59:00",
+    "user": {
+        "userId": 1
+    }
+}
+
 ### タスク取得
-GET http://localhost:8080/tasks/1
+GET http://localhost:8080/tasks/6
 
 
 ### タスク更新（title変更 → createdAtも更新されることを確認）
@@ -48,3 +59,8 @@ Content-Type: application/json
   "password": "securepassword",
   "confirmPassword": "securepassword"
 }
+
+### タスクの削除
+
+DELETE http://localhost:8080/tasks/6
+Content-Type: application/json

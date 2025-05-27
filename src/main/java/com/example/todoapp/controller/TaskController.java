@@ -69,6 +69,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+
     @PutMapping("/{id}/toggle")
     public ResponseEntity<Void> toggleTaskCompletion(@PathVariable Long id) {
         taskService.toggleTaskCompletion(id);
