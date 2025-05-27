@@ -1,8 +1,10 @@
-function deleteTask(taskId) {
+function deleteTask(taskId, event) {
+    if (event) event.preventDefault(); // ← これを追加
+
     if (!confirm("この目標を削除しますか？")) return;
 
     fetch(`/tasks/${taskId}`, { 
-        method: 'POST',
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         }
@@ -12,9 +14,7 @@ function deleteTask(taskId) {
             throw new Error("削除に失敗しました。");
         }
         console.log("削除成功、画面リロード...");
-        
-        // 画面を再読み込みする
-        location.reload();  // ✅←これでページ全体をリロード
+        location.reload();
     })
     .catch(error => {
         console.error("エラー:", error);

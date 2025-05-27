@@ -112,12 +112,10 @@
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
                     <td class="display-mode action-buttons">
                         <button class="edit-button">編集</button>
-                        <form th:action="@{/tasks/{taskId}(taskId=${task.taskId})}" method="post" >
-                            <button th:onclick="'deleteTask(' + ${task.taskId} + ')'" class="delete-button">削除</button>
-                        </form>
-                    </form>
+                        <button type="button" th:onclick="|deleteTask(${task.taskId}, event)|" class="delete-button">
+                            削除
+                        </button>
                     </td>
-
                     <td class="edit-mode" colspan="5">
                         <form th:action="@{/tasks/{taskId}/update(taskId=${task.taskId})}" method="post">
                             <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
