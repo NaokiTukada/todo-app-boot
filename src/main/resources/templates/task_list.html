@@ -4,78 +4,7 @@
         <title>習慣ToDoリスト</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" th:href="@{css/style.css}">
-        <script th:src="@{js/deleteTask.js}"></script>
-        <script th:inline="javascript">
-            window.onload = function() {
-                function validateTaskTitles() {
-                    let taskTitles = document.querySelectorAll('span[data-task-title]');
-                    let hasEmptyTitle = false;
-
-                    taskTitles.forEach(function(titleElement) {
-                        if (titleElement.textContent.trim() === "") {
-                            hasEmptyTitle = true;
-                        }
-                    });
-
-                    if (hasEmptyTitle) {
-                        alert("目標名が空のタスクがあります。設定してください。");
-                    }
-                }
-                validateTaskTitles();
-
-                document.querySelector('table').addEventListener('click', function(event) {
-                    let target = event.target;
-                    let row = target.closest('tr');
-
-                    if (target.type === 'checkbox') {
-                        target.closest('form').submit();
-                    }
-                    else if (target.classList.contains('edit-button')) {
-                        if (row) {
-                            row.classList.add('editing');
-                        }
-                    }
-                    else if (target.classList.contains('edit-ok-button')) {
-                        let inputTitle = row.querySelector('.edit-title-input');
-                        if (inputTitle.value.trim() === "") {
-                            alert("目標名を入力してください。");
-                            event.preventDefault();
-                        }
-                    }
-                    else if (target.classList.contains('edit-cancel-button')) {
-                        if (row) {
-                            row.classList.remove('editing');
-                        }
-                    }
-                });
-
-                let createButton = document.getElementById('createButton');
-                let newRow = document.getElementById('newRow');
-
-                if (createButton && newRow) {
-                    createButton.onclick = function() {
-                        newRow.classList.remove('hidden');
-                        newRow.classList.add('editing');
-                        newRow.querySelector('.new-task-title-input').focus();
-                    };
-                }
-
-                document.getElementById('newRowOkButton').onclick = function(event) {
-                    let inputTitle = document.getElementById('newRow').querySelector('.new-task-title-input');
-                    if (inputTitle.value.trim() === "") {
-                        alert("目標名を入力してください。");
-                        event.preventDefault();
-                    }
-                };
-
-                document.getElementById('newRowCancelButton').onclick = function() {
-                    newRow.classList.add('hidden');
-                    newRow.classList.remove('editing');
-                    newRow.querySelector('.new-task-title-input').value = '';
-                    newRow.querySelector('.new-task-duedate-input').value = '';
-                };
-            };
-        </script>
+        <script th:src="@{/js/edit-task.js}"></script>
     </head>
     <body>
         <div class="header-container">
@@ -110,21 +39,26 @@
                     </td>
                     <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
-                    <td class="display-mode action-buttons">
+                    <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
                         <button type="button" th:onclick="|deleteTask(${task.taskId}, event)|" class="delete-button">
                             削除
                         </button>
                     </td>
                     <td class="edit-mode" colspan="5">
-                        <form th:action="@{/tasks/{taskId}/update(taskId=${task.taskId})}" method="post">
-                            <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
-                            <input type="time" name="dueDate" th:value="${task.dueDate != null ? #temporals.format(task.dueDate, 'HH:mm') : ''}" placeholder="予定時刻" class="edit-duedate-input">
-                            <span>設定日: <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></span>
-                            <span>連続日数: <span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></span>
-                            <button type="submit" class="edit-ok-button">OK</button>
-                            <button type="button" class="edit-cancel-button">キャンセル</button>
-                        </form>
+                    <form th:action="@{/tasks/{id}(id=${task.taskId})}" method="post">
+                        <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
+
+                        <!-- dueDateをtime型入力で編集 -->
+                        <input type="time" name="dueDate" 
+                            th:value="${task.dueDate != null ? #temporals.format(task.dueDate, 'HH:mm') : ''}"
+                            class="edit-duedate-input">
+
+                        <span>設定日: <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></span>
+                        <span>連続日数: <span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></span>
+                        <button type="submit" class="edit-ok-button">OK</button>
+                        <button type="button" class="edit-cancel-button">キャンセル</button>
+                    </form>
                     </td>
                 </tr>
 
