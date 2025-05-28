@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <button type="submit" class="delete-button">削除</button>
                         </form>
                     </td>
-                    <td class="edit-mode" colspan="5">
+                    <td class="edit-mode" colspan="6">
                         <form action="/tasks/${createdTask.taskId}/update" method="post">
                             <input type="text" name="title" value="${createdTask.title}" placeholder="目標名を入力してください" class="edit-title-input">
                             <input type="time" name="dueDate" value="${createdTask.dueDate ? createdTask.dueDate.substring(0, 5) : ''}" placeholder="予定時刻" class="edit-duedate-input">
