@@ -45,9 +45,11 @@ public class UserController {
             );
             return new ResponseEntity<>(registeredUser, HttpStatus.CREATED); // 登録成功
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // バリデーションエラーなど
+            // () を削除
+            return new ResponseEntity<>("新規登録処理中にエラーが発生しました", HttpStatus.BAD_REQUEST); // バリデーションエラーなど
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT); // メールアドレス重複など
+            // () を削除
+            return new ResponseEntity<>("新規登録処理中にエラーが発生しました", HttpStatus.CONFLICT); // メールアドレス重複など
         } catch (Exception e) {
             // その他の予期せぬエラー
             return new ResponseEntity<>("新規登録処理中にエラーが発生しました", HttpStatus.INTERNAL_SERVER_ERROR);
