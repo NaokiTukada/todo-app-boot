@@ -7,6 +7,8 @@
         <script th:src="@{/js/task_create.js}"defer></script>
         <script th:src="@{/js/edit-task.js}"defer></script>
         <script th:src="@{/js/logout.js}"defer></script>
+        <script th:src="@{/js/deleteTask.js}"defer></script>
+        <script th:src="@{/js/task-toggle.js}"defer></script>
     </head>
     <body>
         <div class="header-container">
@@ -20,6 +22,7 @@
         <table th:class="${allTasksCompleted ? 'all-completed' : ''}">
             <thead>
                 <tr>
+                    <th>完了</th>
                     <th>目標名</th>
                     <th>予定時刻</th>
                     <th>連続日数</th>
@@ -30,26 +33,28 @@
             <tbody>
                 <tr th:each="task : ${tasks}" class="task-item" th:attr="data-task-id=${task.taskId}">
                     <td class="display-mode">
-                        <form th:action="@{/tasks/{taskId}/toggle(taskId=${task.taskId})}" method="post">
-                            <input type="checkbox" name="completed" th:checked="${#lists.contains(completedTaskIds, task.taskId)}">
-                        </form>
+                        <input type="checkbox"
+                            th:checked="${task.completed}"
+                            th:onchange="|toggleTaskCompletion(${task.taskId})|">
+                    </td>
+                    <td class="display-mode">
                         <span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''" data-task-title></span>
                     </td>
                     <td class="display-mode">
-                        <span th:if="${task.dueDate}" th:text="${#temporals.format(task.dueDate, 'HH:mm')}"></span>
+                        <span th:text="${task.dueDate} ?: '未設定'">2025-05-24</span>
                         <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
                     </td>
                     <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
                     <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
-                        <form th:action="@{/tasks/{taskId}/delete(taskId=${task.taskId})}" method="post" onsubmit="return confirm('この目標を削除しますか？');">
-                            <button type="submit" class="delete-button">削除</button>
-                        </form>
+                        <button type="button" th:onclick="|deleteTask(${task.taskId}, event)|" class="delete-button">
+                            削除
+                        </button>
                     </td>
 
                     <input type="hidden" id="userId" value="1">
-                    <td class="edit-mode" colspan="5">
+                    <td class="edit-mode" colspan="6">
                     <form th:action="@{/tasks/{id}(id=${task.taskId})}" method="post">
                         <input type="text" name="title" th:value="${task.title}" placeholder="目標名を入力してください" class="edit-title-input">
 
@@ -67,7 +72,7 @@
                 </tr>
 
                 <tr id="newRow" class="new-row hidden">
-                    <td colspan="5">
+                    <td colspan="6">
                         <form th:action="@{/tasks/create}" method="post">
                             <input type="hidden" name="userId" th:value="${userId}">
                             <input type="text" name="title" placeholder="目標名を入力してください" class="new-task-title-input">
