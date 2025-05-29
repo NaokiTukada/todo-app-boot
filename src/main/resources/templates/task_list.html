@@ -40,8 +40,8 @@
                         <span th:text="${task.dueDate} ?: '未設定'">2025-05-24</span>
                         <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
                     </td>
-                    <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
+                    <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
                     <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
                         <button type="button" th:onclick="|deleteTask(${task.taskId}, event)|" class="delete-button">

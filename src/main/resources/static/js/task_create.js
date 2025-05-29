@@ -135,10 +135,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span>${createdTask.dueDate ? createdTask.dueDate.substring(0, 5) : 'ー'}</span>
                     </td>
                     <td class="display-mode">
-                        <span>${formattedCreatedAt}</span>
+                        <span>0日</span>
                     </td>
                     <td class="display-mode">
-                        <span>0日</span>
+                        <span>${formattedCreatedAt}</span>
                     </td>
                     <td class="display-mode action-buttons" style="display: table-cell;">
                         <button class="edit-button">編集</button>
