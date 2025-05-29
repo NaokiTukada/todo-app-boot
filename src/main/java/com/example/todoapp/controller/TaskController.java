@@ -56,7 +56,6 @@ public class TaskController {
         model.addAttribute("userEmail", email);
         model.addAttribute("allTasksStreakCount", minStreak);
         model.addAttribute("allTasksCompleted", false);  
-        model.addAttribute("allTasksStreakCount", 0);    
         model.addAttribute("showResetButton", false);    
 
         return "task_list";
