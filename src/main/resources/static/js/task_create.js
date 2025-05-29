@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             
             if (response.ok) {
+
+                 location.reload();
+                 
                 const createdTask = await response.json(); 
                 
                 const newTr = document.createElement('tr'); 
@@ -150,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <form action="/tasks/${createdTask.taskId}/update" method="post">
                             <input type="text" name="title" value="${createdTask.title}" placeholder="目標名を入力してください" class="edit-title-input">
                             <input type="time" name="dueDate" value="${createdTask.dueDate ? createdTask.dueDate.substring(0, 5) : ''}" placeholder="予定時刻" class="edit-duedate-input">
+                            <span>連続日数: <span>0日</span></span>                          
                             <span>設定日: <span>${formattedCreatedAt}</span></span>
-                            <span>連続日数: <span>0日</span></span>
                             <button type="submit" class="edit-ok-button">OK</button>
                             <button type="button" class="edit-cancel-button">キャンセル</button>
                         </form>
