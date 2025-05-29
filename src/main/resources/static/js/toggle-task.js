@@ -1,5 +1,4 @@
 function toggleTaskCompletion(taskId, event) {
-    // event.preventDefault();  ← 削除
 
     fetch(`/tasks/${taskId}/toggle`, {
         method: 'PUT',
