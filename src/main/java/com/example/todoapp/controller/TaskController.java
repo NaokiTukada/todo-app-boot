@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.todoapp.domain.Task;
 import com.example.todoapp.domain.User;
 import com.example.todoapp.repository.UserRepository;
 import com.example.todoapp.service.TaskService;
-import com.example.todoapp.service.UserService;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +25,6 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserRepository userRepository;
-    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
@@ -36,10 +37,9 @@ public class TaskController {
     }
 
     @GetMapping
-    public String ListTasks(Model model) {
+    public String ListTasks(Model model, Authentication authentication) {
         List<Task> tasks = taskService.getAllTasks();
 
-        // 完了済みタスクIDを抽出
         List<Long> completedTaskIds = tasks.stream()
                                         .filter(Task::isCompleted)
                                         .map(Task::getTaskId)
@@ -48,14 +48,22 @@ public class TaskController {
         model.addAttribute("tasks", tasks);
         model.addAttribute("completedTaskIds", completedTaskIds);
 
-        // 他のダミー値は必要に応じて設定
-        model.addAttribute("userEmail", "dummy@example.com");
+        String userEmail = "";
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                userEmail = ((UserDetails) principal).getUsername();  // ここにメールアドレス
+            }
+        }
+        model.addAttribute("userEmail", userEmail);
+
         model.addAttribute("allTasksCompleted", false);
         model.addAttribute("allTasksStreakCount", 0);
         model.addAttribute("showResetButton", false);
 
         return "task_list";
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
