@@ -27,39 +27,31 @@ public class TaskController {
     private final UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Optional<User> userOpt = userRepository.findById(task.getUser().getUserId());
-        if (userOpt.isEmpty())
-            return ResponseEntity.notFound().build();
-        task.setUser(userOpt.get());
+    public ResponseEntity<Task> createTask(@RequestBody Task task, Authentication authentication) {
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow();
+        task.setUser(user);
         Task savedTask = taskService.createTask(task);
         return ResponseEntity.ok(savedTask);
     }
 
     @GetMapping
-    public String ListTasks(Model model, Authentication authentication) {
-        List<Task> tasks = taskService.getAllTasks();
+    public String listTasks(Model model, Authentication authentication) {
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow();
 
+        List<Task> tasks = taskService.getTasksByUser(user);
         List<Long> completedTaskIds = tasks.stream()
-                                        .filter(Task::isCompleted)
-                                        .map(Task::getTaskId)
-                                        .toList();
+                                           .filter(Task::isCompleted)
+                                           .map(Task::getTaskId)
+                                           .toList();
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("completedTaskIds", completedTaskIds);
-
-        String userEmail = "";
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                userEmail = ((UserDetails) principal).getUsername();  // ここにメールアドレス
-            }
-        }
-        model.addAttribute("userEmail", userEmail);
-
-        model.addAttribute("allTasksCompleted", false);
-        model.addAttribute("allTasksStreakCount", 0);
-        model.addAttribute("showResetButton", false);
+        model.addAttribute("userEmail", email);
+        model.addAttribute("allTasksCompleted", false);  
+        model.addAttribute("allTasksStreakCount", 0);    
+        model.addAttribute("showResetButton", false);    
 
         return "task_list";
     }
