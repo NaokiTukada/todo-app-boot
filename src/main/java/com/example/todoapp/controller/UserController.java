@@ -73,8 +73,7 @@ public class UserController {
 
             // 追加:最終ログイン日時を更新
             userService.findByEmail(email).ifPresent(userService::updateLastLogin);
-
-            return ResponseEntity.ok(Map.of("token", jwt)); // ログイン成功時に JWT を返す
+            
              // JWTをHttpOnlyクッキーにセット
             // application.propertiesのjwt.expiration（ミリ秒）を使う
             int maxAge = (int) (jwtUtil.getExpiration() / 1000); // 秒に変換
