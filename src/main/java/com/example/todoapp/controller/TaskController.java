@@ -46,9 +46,15 @@ public class TaskController {
                                            .map(Task::getTaskId)
                                            .toList();
 
+        int minStreak = tasks.stream()
+                .mapToInt(Task::getCurrentStreak)
+                .min()
+                .orElse(0);
+
         model.addAttribute("tasks", tasks);
         model.addAttribute("completedTaskIds", completedTaskIds);
         model.addAttribute("userEmail", email);
+        model.addAttribute("allTasksStreakCount", minStreak);
         model.addAttribute("allTasksCompleted", false);  
         model.addAttribute("allTasksStreakCount", 0);    
         model.addAttribute("showResetButton", false);    

@@ -6,7 +6,7 @@ body {
 }
 
 .header-container {
-    background-color: #333;
+    background-color:#2196F3;
     color: white;
     padding: 10px;
     text-align: center;
@@ -25,7 +25,7 @@ body {
 }
 
 .logout-button {
-    background-color: #f44336;
+    background-color: #5e5e5e;
     color: white;
     padding: 8px 16px;
     text-decoration: none;
@@ -34,14 +34,14 @@ body {
 }
 
 .logout-button:hover {
-    background-color: #d32f2f;
+    background-color: #9a9a9a;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
 }
 
 th, td {
@@ -167,10 +167,6 @@ tbody tr:nth-child(odd) {
     font-size: 12px;
     width: auto;
 }
-.button-container {
-    margin-top: 20px;
-    text-align: center;
-}
 
 #createButton {
     padding: 10px 20px;
@@ -201,4 +197,22 @@ tbody tr:nth-child(odd) {
 .completed{
     text-decoration: line-through;
     color: #888;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;           
+}
+.highlight-streak{
+  font-weight: 700;
+  font-size: 1.2em;
+  color: #ee6d3f;
+  background-color: #edefd9;    
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #fd8c4a;
+  box-shadow: 0 2px 5px rgba(87, 55, 8, 0.3);
+  margin-top: 10px;
+  text-align: center;
 }

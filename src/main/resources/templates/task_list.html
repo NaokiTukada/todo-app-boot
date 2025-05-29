@@ -86,11 +86,11 @@
             </tbody>
         </table>
 
-        <p th:text="${'全タスク連続達成日数: ' + allTasksStreakCount + '日'}"></p>
-        <p th:if="${allTasksCompleted}" class="all-completed-message">今日のタスクを全て達成しました！</p>
-
-        <div class="button-container">
+        <div class="flex-container">
+            <p class="highlight-streak" th:text="${'全目標連続達成日数: ' + allTasksStreakCount + '日'}"></p>
             <button id="createButton">新規作成</button>
         </div>
+
+    <p th:if="${allTasksCompleted}" class="all-completed-message">今日の目標を全て達成しました！</p>
     </body>
 </html>
