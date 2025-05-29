@@ -51,29 +51,16 @@
                             削除
                         </button>
                     </td>
-
-                    <td class="edit-mode" style="display:none;">
-                        <form>
-                            <input type="text" class="edit-title-input" th:value="${task.title}" required>
-                        </form>
-                    </td>
-                    <td class="edit-mode" style="display:none;">
-                        <form>
-                            <input type="time" class="edit-duedate-input" th:value="${task.dueDate}" >
-                        </form>
-                    </td>
-                    <td class="edit-mode" style="display:none;">
+                <td class="edit-mode" colspan="5" style="display: none;">
+                    <form class="edit-form" th:attr="data-task-id=${task.taskId}">
+                        <input type="text" class="edit-title-input" th:value="${task.title}" required>
+                        <input type="time" class="edit-duedate-input" th:value="${task.dueDate}">
                         <span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span>
-                    </td>
-                    <td class="edit-mode" style="display:none;">
                         <span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span>
-                    </td>
-                    <td class="edit-mode action-buttons" style="display:none;">
                         <button type="submit" class="edit-ok-button">OK</button>
                         <button type="button" class="edit-cancel-button">キャンセル</button>
-                    </td>
-                </tr>
-
+                    </form>
+                </td>
                 <tr id="newRow" class="new-row hidden">
                     <td colspan="5">
                         <form th:action="@{/tasks/create}" method="post">
