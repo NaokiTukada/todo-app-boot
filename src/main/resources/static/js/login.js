@@ -55,13 +55,7 @@ loginForm.addEventListener('submit', async function(event) {
         });
 
         // レスポンスのHTTPステータスを確認
-        if (response.ok) { // HTTPステータスが2xxの場合 (例: 200 OK)
-            const data = await response.json();
-            const jwtToken = data.token;
-
-            // JWTをローカルストレージに保存
-            localStorage.setItem('jwtToken', jwtToken);
-
+        if (response.ok) {
             // ログイン成功後、目標一覧表画面へリダイレクト
             window.location.href = '/tasks'; 
         } else {
