@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.todoapp.domain.Task;
 import com.example.todoapp.domain.User;
 import com.example.todoapp.repository.UserRepository;
 import com.example.todoapp.service.TaskService;
-import com.example.todoapp.service.UserService;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,39 +25,42 @@ public class TaskController {
 
     private final TaskService taskService;
     private final UserRepository userRepository;
-    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Optional<User> userOpt = userRepository.findById(task.getUser().getUserId());
-        if (userOpt.isEmpty())
-            return ResponseEntity.notFound().build();
-        task.setUser(userOpt.get());
+    public ResponseEntity<Task> createTask(@RequestBody Task task, Authentication authentication) {
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow();
+        task.setUser(user);
         Task savedTask = taskService.createTask(task);
         return ResponseEntity.ok(savedTask);
     }
 
     @GetMapping
-    public String ListTasks(Model model) {
-        List<Task> tasks = taskService.getAllTasks();
+    public String listTasks(Model model, Authentication authentication) {
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email).orElseThrow();
 
-        // 完了済みタスクIDを抽出
+        List<Task> tasks = taskService.getTasksByUser(user);
         List<Long> completedTaskIds = tasks.stream()
-                                        .filter(Task::isCompleted)
-                                        .map(Task::getTaskId)
-                                        .toList();
+                                           .filter(Task::isCompleted)
+                                           .map(Task::getTaskId)
+                                           .toList();
+
+        int minStreak = tasks.stream()
+                .mapToInt(Task::getCurrentStreak)
+                .min()
+                .orElse(0);
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("completedTaskIds", completedTaskIds);
-
-        // 他のダミー値は必要に応じて設定
-        model.addAttribute("userEmail", "dummy@example.com");
-        model.addAttribute("allTasksCompleted", false);
-        model.addAttribute("allTasksStreakCount", 0);
-        model.addAttribute("showResetButton", false);
+        model.addAttribute("userEmail", email);
+        model.addAttribute("allTasksStreakCount", minStreak);
+        model.addAttribute("allTasksCompleted", false);  
+        model.addAttribute("showResetButton", false);    
 
         return "task_list";
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
