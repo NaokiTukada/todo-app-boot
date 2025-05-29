@@ -38,11 +38,18 @@ public class TaskController {
     @GetMapping
     public String ListTasks(Model model) {
         List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
 
-        // 必要な変数をダミー値で追加（本来はサービス等から取得）
+        // 完了済みタスクIDを抽出
+        List<Long> completedTaskIds = tasks.stream()
+                                        .filter(Task::isCompleted)
+                                        .map(Task::getTaskId)
+                                        .toList();
+
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("completedTaskIds", completedTaskIds);
+
+        // 他のダミー値は必要に応じて設定
         model.addAttribute("userEmail", "dummy@example.com");
-        model.addAttribute("completedTaskIds", List.of());
         model.addAttribute("allTasksCompleted", false);
         model.addAttribute("allTasksStreakCount", 0);
         model.addAttribute("showResetButton", false);
