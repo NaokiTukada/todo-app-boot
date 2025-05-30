@@ -40,8 +40,8 @@
                         <span th:text="${task.title}" th:class="${#lists.contains(completedTaskIds, task.taskId)} ? 'completed' : ''" data-task-title></span>
                     </td>
                     <td class="display-mode">
-                        <span th:text="${task.dueDate}">2025-05-24</span>
-                        <span th:unless="${task.dueDate}" class="no-due-date"> ー </span>
+                        <span th:if="${task.dueDate}" th:text="${task.dueDate}"></span>
+                        <span th:unless="${task.dueDate}" class="no-due-date">ー</span>
                     </td>
                     <td class="display-mode"><span th:text="${task.currentStreak != null ? task.currentStreak + '日' : '0日'}"></span></td>
                     <td class="display-mode"><span th:text="${#temporals.format(task.createdAt, 'yyyy/MM/dd')}"></span></td>
@@ -51,7 +51,7 @@
                             削除
                         </button>
                     </td>
-                <td class="edit-mode" colspan="5" style="display: none;">
+                <td class="edit-mode" colspan="2" style="display: none;">
                     <form class="edit-form" th:attr="data-task-id=${task.taskId}">
                         <input type="text" class="edit-title-input" th:value="${task.title}" required>
                         <input type="time" class="edit-duedate-input" th:value="${task.dueDate}">
