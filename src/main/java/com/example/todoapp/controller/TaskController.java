@@ -41,6 +41,12 @@ public class TaskController {
         User user = userRepository.findByEmail(email).orElseThrow();
 
         List<Task> tasks = taskService.getTasksByUser(user);
+        
+        tasks.sort(java.util.Comparator.comparing(
+            Task::getDueDate,
+            java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())
+        ));
+
         List<Long> completedTaskIds = tasks.stream()
                                            .filter(Task::isCompleted)
                                            .map(Task::getTaskId)
