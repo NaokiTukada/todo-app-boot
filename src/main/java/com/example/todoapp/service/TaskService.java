@@ -108,7 +108,7 @@ public class TaskService {
 
             if (task.isCompleted() &&
                 task.getCompletedAt() != null &&
-                task.getCompletedAt().toLocalDate().isEqual(yesterday)) {
+                task.getCompletedAt().toLocalDate().isBefore(today)) {
 
                 task.setCompleted(false);
             }

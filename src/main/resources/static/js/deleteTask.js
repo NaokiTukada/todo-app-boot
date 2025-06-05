@@ -1,5 +1,5 @@
 function deleteTask(taskId, event) {
-    if (event) event.preventDefault(); // ← これを追加
+    if (event) event.preventDefault(); 
 
     if (!confirm("この目標を削除しますか？")) return;
 
